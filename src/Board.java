@@ -75,10 +75,7 @@ public class Board extends JPanel {
     }
 
     private class TAdapter extends KeyAdapter {
-        @Override
-        public void keyReleased(KeyEvent e){
-            player.keyReleased(e);
-        }
+
         @Override
         public void keyPressed(KeyEvent e){
             player.keyPressed(e);

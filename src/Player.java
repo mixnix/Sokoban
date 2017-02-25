@@ -15,7 +15,6 @@ public class Player {
     protected boolean visisble;
     protected Image image;
     //zobacz czy bez konstruktora tez dziala
-    AlreadyMoved alreadyMoved = new AlreadyMoved();
 
     public Player(int x, int y){
         this.x = x;
@@ -51,44 +50,20 @@ public class Player {
     public void keyPressed(KeyEvent e){
         int key = e.getKeyCode();
 
-        if(!alreadyMoved.left && key == KeyEvent.VK_LEFT){
-            x += -15;
-            alreadyMoved.left = true;
-        }
-
-        if(!alreadyMoved.right && key == KeyEvent.VK_RIGHT){
-            x += 15;
-            alreadyMoved.right = true;
-        }
-
-        if(!alreadyMoved.up && key == KeyEvent.VK_UP){
-            y += -15;
-            alreadyMoved.up = true;
-        }
-
-        if(!alreadyMoved.down && key == KeyEvent.VK_DOWN){
-            y += 15;
-            alreadyMoved.down = true;
-        }
-    }
-
-    public void keyReleased(KeyEvent e){
-        int key = e.getKeyCode();
-
         if(key == KeyEvent.VK_LEFT){
-            alreadyMoved.left = false;
+            x += -15;
         }
 
         if(key == KeyEvent.VK_RIGHT){
-            alreadyMoved.right = false;
+            x += 15;
         }
 
         if(key == KeyEvent.VK_UP){
-            alreadyMoved.up = false;
+            y += -15;
         }
 
         if(key == KeyEvent.VK_DOWN){
-            alreadyMoved.down = false;
+            y += 15;
         }
     }
 }
