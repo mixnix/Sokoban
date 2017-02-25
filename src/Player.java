@@ -47,23 +47,4 @@ public class Player {
     //not needed because I won't be using collision detection
     public Rectangle getBounds() { return new Rectangle(x,y,width,height);}
 
-    public void keyPressed(KeyEvent e){
-        int key = e.getKeyCode();
-
-        if(key == KeyEvent.VK_LEFT){
-            x += -15;
-        }
-
-        if(key == KeyEvent.VK_RIGHT){
-            x += 15;
-        }
-
-        if(key == KeyEvent.VK_UP){
-            y += -15;
-        }
-
-        if(key == KeyEvent.VK_DOWN){
-            y += 15;
-        }
-    }
 }

@@ -76,9 +76,26 @@ public class Board extends JPanel {
 
     private class TAdapter extends KeyAdapter {
 
+        //TODO x and y should be private
         @Override
         public void keyPressed(KeyEvent e){
-            player.keyPressed(e);
+            int key = e.getKeyCode();
+
+            if(key == KeyEvent.VK_LEFT){
+                player.x += -15;
+            }
+
+            if(key == KeyEvent.VK_RIGHT){
+                player.x += 15;
+            }
+
+            if(key == KeyEvent.VK_UP){
+                player.y += -15;
+            }
+
+            if(key == KeyEvent.VK_DOWN){
+                player.y += 15;
+            }
             repaint();
         }
 
