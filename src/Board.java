@@ -82,6 +82,7 @@ public class Board extends JPanel {
             int key = e.getKeyCode();
 
             if(key == KeyEvent.VK_LEFT){
+               // if(isWallCollision(1))
                 player.x += -15;
             }
 
@@ -98,7 +99,7 @@ public class Board extends JPanel {
             }
             repaint();
         }
-
-
     }
+
+
 }
