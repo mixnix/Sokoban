@@ -63,9 +63,8 @@ public class Board extends JPanel {
     public void paintComponent(Graphics g){
         super.paintComponent(g);
 
-        if(player.isVisible()){
-            g.drawImage(player.getImage(), player.getX(), player.getY(), this);
-        }
+        g.drawImage(player.getImage(), player.getX(), player.getY(), this);
+
 
         for(int i = 0; i < walls.size(); i++){
             Wall item = walls.get(i);
@@ -101,5 +100,40 @@ public class Board extends JPanel {
         }
     }
 
-
+//    private boolean isWallCollision(int type){
+//        if(type == 1){
+//            for(int i = 0; i < walls.size(); i++){
+//                Wall wall = (Wall) walls.get(i);
+//                if(player.isLeftCollision(wall)){
+//                    return true;
+//                }
+//            }
+//            return false;
+//        } else if (type == RIGHT_COLLISON){
+//            for(int i = 0; i < walls.size(); i++){
+//                Wall wall = (Wall) walls.get(i);
+//                if(actor.isRightCollision(wall)){
+//                    return true;
+//                }
+//            }
+//            return false;
+//        }else if (type == TOP_COLLISION){
+//            for(int i = 0; i < walls.size(); i++){
+//                Wall wall = (Wall) walls.get(i);
+//                if(actor.isTopCollision(wall)){
+//                    return true;
+//                }
+//            }
+//            return false;
+//        } else if (type == BOTTOM_COLLISION){
+//            for(int i = 0; i < walls.size(); i++){
+//                Wall wall = (Wall) walls.get(i);
+//                if(actor.isBottomCollision(wall)){
+//                    return true;
+//                }
+//            }
+//            return false;
+//        }
+//        return false;
+//    }
 }
