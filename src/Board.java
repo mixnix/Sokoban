@@ -2,12 +2,26 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 
 /**
  * Created by user_name on 24.02.2017.
  */
 public class Board extends JPanel {
     Player player;
+
+    ArrayList<Wall> walls = new ArrayList<Wall>();
+
+    private String level = "##########\n" +
+            "#        #\n" +
+            "#        #\n" +
+            "#        #\n" +
+            "#        #\n" +
+            "#        #\n" +
+            "#        #\n" +
+            "#        #\n" +
+            "#        #\n" +
+            "##########";
 
     public Board(){
 
@@ -19,6 +33,30 @@ public class Board extends JPanel {
         addKeyListener(new TAdapter());
 
         player = new Player(40,60);
+
+        int x = 10;
+        int y = 10;
+        int height = 0;
+        int width = 0;
+        int DISTANCE = 15;
+        for(int i = 0; i < level.length(); i++){
+            char item = level.charAt(i);
+
+            if(item == '\n'){
+                y += DISTANCE;
+                if(width < x){
+                    width = x;
+                }
+                x = 10;
+            } else if(item == '#'){
+                Wall wall = new Wall(x,y);
+                walls.add(wall);
+                x += DISTANCE;
+            } else if(item == ' '){
+                x+= DISTANCE;
+            }
+            height = y;
+        }
     }
 
     @Override
@@ -27,6 +65,12 @@ public class Board extends JPanel {
 
         if(player.isVisible()){
             g.drawImage(player.getImage(), player.getX(), player.getY(), this);
+        }
+
+        for(int i = 0; i < walls.size(); i++){
+            Wall item = walls.get(i);
+
+            g.drawImage(item.getImage(), item.getX(), item.getY(), this);
         }
     }
 
@@ -40,5 +84,7 @@ public class Board extends JPanel {
             player.keyPressed(e);
             repaint();
         }
+
+
     }
 }
