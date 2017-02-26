@@ -32,7 +32,7 @@ public class Board extends JPanel {
 
         addKeyListener(new TAdapter());
 
-        player = new Player(40,60);
+        player = new Player(40,40);
 
         int x = 10;
         int y = 10;
@@ -81,59 +81,62 @@ public class Board extends JPanel {
             int key = e.getKeyCode();
 
             if(key == KeyEvent.VK_LEFT){
-               // if(isWallCollision(1))
-                player.x += -15;
+               if(!isWallCollision(1))
+                   player.x += -15;
             }
 
             if(key == KeyEvent.VK_RIGHT){
-                player.x += 15;
+                if(!isWallCollision(2))
+                    player.x += 15;
             }
 
             if(key == KeyEvent.VK_UP){
-                player.y += -15;
+                if(!isWallCollision(3))
+                    player.y += -15;
             }
 
             if(key == KeyEvent.VK_DOWN){
-                player.y += 15;
+                if(!isWallCollision(4))
+                    player.y += 15;
             }
             repaint();
         }
     }
 
-//    private boolean isWallCollision(int type){
-//        if(type == 1){
-//            for(int i = 0; i < walls.size(); i++){
-//                Wall wall = (Wall) walls.get(i);
-//                if(player.isLeftCollision(wall)){
-//                    return true;
-//                }
-//            }
-//            return false;
-//        } else if (type == RIGHT_COLLISON){
-//            for(int i = 0; i < walls.size(); i++){
-//                Wall wall = (Wall) walls.get(i);
-//                if(actor.isRightCollision(wall)){
-//                    return true;
-//                }
-//            }
-//            return false;
-//        }else if (type == TOP_COLLISION){
-//            for(int i = 0; i < walls.size(); i++){
-//                Wall wall = (Wall) walls.get(i);
-//                if(actor.isTopCollision(wall)){
-//                    return true;
-//                }
-//            }
-//            return false;
-//        } else if (type == BOTTOM_COLLISION){
-//            for(int i = 0; i < walls.size(); i++){
-//                Wall wall = (Wall) walls.get(i);
-//                if(actor.isBottomCollision(wall)){
-//                    return true;
-//                }
-//            }
-//            return false;
-//        }
-//        return false;
-//    }
+    private boolean isWallCollision(int type){
+        if(type == 1){
+            for(int i = 0; i < walls.size(); i++){
+                Wall wall = walls.get(i);
+                if(player.isLeftCollision(wall)){
+                    return true;
+                }
+            }
+            return false;
+        } else if (type == 2){
+            for(int i = 0; i < walls.size(); i++){
+                Wall wall = (Wall) walls.get(i);
+                if(player.isRightCollision(wall)){
+                    return true;
+                }
+            }
+            return false;
+        }else if (type == 3){
+            for(int i = 0; i < walls.size(); i++){
+                Wall wall = (Wall) walls.get(i);
+                if(player.isUpCollision(wall)){
+                    return true;
+                }
+            }
+            return false;
+        } else if (type == 4){
+            for(int i = 0; i < walls.size(); i++){
+                Wall wall = (Wall) walls.get(i);
+                if(player.isDownCollision(wall)){
+                    return true;
+                }
+            }
+            return false;
+        }
+        return false;
+    }
 }
