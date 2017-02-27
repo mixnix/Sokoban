@@ -23,6 +23,9 @@ public class Board extends JPanel {
             "#        #\n" +
             "##########";
 
+    private final int DISTANCE = 15;
+
+
     public Board(){
 
         //init UI
@@ -36,9 +39,7 @@ public class Board extends JPanel {
 
         int x = 10;
         int y = 10;
-        int height = 0;
         int width = 0;
-        int DISTANCE = 15;
         for(int i = 0; i < level.length(); i++){
             char item = level.charAt(i);
 
@@ -55,7 +56,6 @@ public class Board extends JPanel {
             } else if(item == ' '){
                 x+= DISTANCE;
             }
-            height = y;
         }
     }
 
@@ -82,22 +82,22 @@ public class Board extends JPanel {
 
             if(key == KeyEvent.VK_LEFT){
                if(!isWallCollision(1))
-                   player.x += -15;
+                   player.x += -DISTANCE;
             }
 
             if(key == KeyEvent.VK_RIGHT){
                 if(!isWallCollision(2))
-                    player.x += 15;
+                    player.x += DISTANCE;
             }
 
             if(key == KeyEvent.VK_UP){
                 if(!isWallCollision(3))
-                    player.y += -15;
+                    player.y += -DISTANCE;
             }
 
             if(key == KeyEvent.VK_DOWN){
                 if(!isWallCollision(4))
-                    player.y += 15;
+                    player.y += DISTANCE;
             }
             repaint();
         }
@@ -114,7 +114,7 @@ public class Board extends JPanel {
             return false;
         } else if (type == 2){
             for(int i = 0; i < walls.size(); i++){
-                Wall wall = (Wall) walls.get(i);
+                Wall wall = walls.get(i);
                 if(player.isRightCollision(wall)){
                     return true;
                 }
@@ -122,7 +122,7 @@ public class Board extends JPanel {
             return false;
         }else if (type == 3){
             for(int i = 0; i < walls.size(); i++){
-                Wall wall = (Wall) walls.get(i);
+                Wall wall = walls.get(i);
                 if(player.isUpCollision(wall)){
                     return true;
                 }
@@ -130,13 +130,12 @@ public class Board extends JPanel {
             return false;
         } else if (type == 4){
             for(int i = 0; i < walls.size(); i++){
-                Wall wall = (Wall) walls.get(i);
+                Wall wall = walls.get(i);
                 if(player.isDownCollision(wall)){
                     return true;
                 }
             }
             return false;
         }
-        return false;
     }
 }
