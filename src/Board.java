@@ -80,62 +80,64 @@ public class Board extends JPanel {
             int key = e.getKeyCode();
 
             if(key == KeyEvent.VK_LEFT){
-               if(!isWallCollision(1))
+               if(!isWallCollision(Direction.LEFT))
                    player.x += -DISTANCE;
             }
 
             if(key == KeyEvent.VK_RIGHT){
-                if(!isWallCollision(2))
+                if(!isWallCollision(Direction.RIGHT))
                     player.x += DISTANCE;
             }
 
             if(key == KeyEvent.VK_UP){
-                if(!isWallCollision(3))
+                if(!isWallCollision(Direction.UP))
                     player.y += -DISTANCE;
             }
 
             if(key == KeyEvent.VK_DOWN){
-                if(!isWallCollision(4))
+                if(!isWallCollision(Direction.DOWN))
                     player.y += DISTANCE;
             }
             repaint();
         }
     }
 
-    private boolean isWallCollision(int type){
-        if(type == 1){
-            for(int i = 0; i < walls.size(); i++){
-                Wall wall = walls.get(i);
-                if(player.isLeftCollision(wall)){
-                    return true;
+    private boolean isWallCollision(Direction direction){
+        switch (direction) {
+            case LEFT:
+                for (int i = 0; i < walls.size(); i++) {
+                    Wall wall = walls.get(i);
+                    if (player.isLeftCollision(wall)) {
+                        return true;
+                    }
                 }
-            }
-            return false;
-        } else if (type == 2){
-            for(int i = 0; i < walls.size(); i++){
-                Wall wall = walls.get(i);
-                if(player.isRightCollision(wall)){
-                    return true;
+                return false;
+            case RIGHT:
+                for (int i = 0; i < walls.size(); i++) {
+                    Wall wall = walls.get(i);
+                    if (player.isRightCollision(wall)) {
+                        return true;
+                    }
                 }
-            }
-            return false;
-        }else if (type == 3){
-            for(int i = 0; i < walls.size(); i++){
-                Wall wall = walls.get(i);
-                if(player.isUpCollision(wall)){
-                    return true;
+                return false;
+            case UP:
+                for (int i = 0; i < walls.size(); i++) {
+                    Wall wall = walls.get(i);
+                    if (player.isUpCollision(wall)) {
+                        return true;
+                    }
                 }
-            }
-            return false;
-        } else if (type == 4){
-            for(int i = 0; i < walls.size(); i++){
-                Wall wall = walls.get(i);
-                if(player.isDownCollision(wall)){
-                    return true;
+                return false;
+            case DOWN:
+                for (int i = 0; i < walls.size(); i++) {
+                    Wall wall = walls.get(i);
+                    if (player.isDownCollision(wall)) {
+                        return true;
+                    }
                 }
-            }
-            return false;
+                return false;
+            default:
+                return false;
         }
-        return false;
     }
 }
