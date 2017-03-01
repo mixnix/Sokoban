@@ -75,7 +75,6 @@ public class Board extends JPanel {
 
     private class TAdapter extends KeyAdapter {
 
-        //TODO x and y should be private
         @Override
         public void keyPressed(KeyEvent e){
             int key = e.getKeyCode();
@@ -137,5 +136,6 @@ public class Board extends JPanel {
             }
             return false;
         }
+        return false;
     }
 }
