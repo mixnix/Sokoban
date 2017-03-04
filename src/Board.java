@@ -1,7 +1,14 @@
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
 import javax.swing.*;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.File;
 import java.util.ArrayList;
 
 /**
@@ -37,25 +44,44 @@ public class Board extends JPanel {
 
         player = new Player(40,40);
 
+        loadBoardFromXML();
+    }
+
+    private void loadBoardFromXML(){
         int x = 10;
         int y = 10;
         int width = 0;
-        for(int i = 0; i < level.length(); i++){
-            char item = level.charAt(i);
+        try {
+            File inputFile = new File("diagram.xml");
+            DocumentBuilderFactory dbFactory
+                    = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            Document doc = dBuilder.parse(inputFile);
+            doc.getDocumentElement().normalize();
 
-            if(item == '\n'){
+            NodeList nList = doc.getElementsByTagName("line");
+            for(int n = 0; n < nList.getLength(); ++ n){
+                Node nNode = nList.item(n);
+                NodeList innerList = nNode.getChildNodes();
+                for(int j = 0; j < innerList.getLength(); ++j){
+                    Node innerNode = innerList.item(j);
+                    if(innerNode.getTextContent().equals("wall")){
+                        Wall wall = new Wall(x,y);
+                        walls.add(wall);
+                        x += DISTANCE;
+                    } else if(innerNode.getTextContent().equals("empty_field")){
+                        x+= DISTANCE;
+                    }
+                }
+                //next row
                 y += DISTANCE;
                 if(width < x){
                     width = x;
                 }
                 x = 10;
-            } else if(item == '#'){
-                Wall wall = new Wall(x,y);
-                walls.add(wall);
-                x += DISTANCE;
-            } else if(item == ' '){
-                x+= DISTANCE;
             }
+        }catch(Exception ex){
+            ex.printStackTrace();
         }
     }
 
