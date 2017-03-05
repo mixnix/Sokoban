@@ -42,7 +42,6 @@ public class Board extends JPanel {
 
         addKeyListener(new TAdapter());
 
-        player = new Player(40,40);
 
         loadBoardFromXML();
     }
@@ -68,10 +67,11 @@ public class Board extends JPanel {
                     if(innerNode.getTextContent().equals("wall")){
                         Wall wall = new Wall(x,y);
                         walls.add(wall);
-                        x += DISTANCE;
                     } else if(innerNode.getTextContent().equals("empty_field")){
-                        x+= DISTANCE;
+                    } else if(innerNode.getTextContent().equals("player")){
+                        player = new Player(x,y);
                     }
+                    x+= DISTANCE;
                 }
                 //next row
                 y += DISTANCE;
