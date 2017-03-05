@@ -1,0 +1,1 @@
+-game cant handle 2 players in XML file
