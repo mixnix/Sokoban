@@ -1,1 +1,2 @@
 -game cant handle 2 players in XML file
+-game cant handle 2 objects on one squared

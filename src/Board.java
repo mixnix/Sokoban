@@ -18,6 +18,7 @@ public class Board extends JPanel {
     Player player;
 
     ArrayList<Wall> walls = new ArrayList<Wall>();
+    ArrayList<Box> boxes = new ArrayList<Box>();
 
     private String level = "##########\n" +
             "#        #\n" +
@@ -70,6 +71,9 @@ public class Board extends JPanel {
                     } else if(innerNode.getTextContent().equals("empty_field")){
                     } else if(innerNode.getTextContent().equals("player")){
                         player = new Player(x,y);
+                    } else if(innerNode.getTextContent().equals("box")){
+                        Box box = new Box(x,y);
+                        boxes.add(box);
                     }
                     x+= DISTANCE;
                 }
@@ -91,7 +95,11 @@ public class Board extends JPanel {
 
         g.drawImage(player.getImage(), player.getX(), player.getY(), this);
 
+        for(int i = 0; i < boxes.size(); i++){
+            Box item = boxes.get(i);
 
+            g.drawImage(item.getImage(), item.getX(), item.getY(), this);
+        }
         for(int i = 0; i < walls.size(); i++){
             Wall item = walls.get(i);
 
