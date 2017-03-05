@@ -19,6 +19,7 @@ public class Board extends JPanel {
 
     ArrayList<Wall> walls = new ArrayList<Wall>();
     ArrayList<Box> boxes = new ArrayList<Box>();
+    ArrayList<End_position> end_positions = new ArrayList<End_position>();
 
     private String level = "##########\n" +
             "#        #\n" +
@@ -74,6 +75,9 @@ public class Board extends JPanel {
                     } else if(innerNode.getTextContent().equals("box")){
                         Box box = new Box(x,y);
                         boxes.add(box);
+                    } else if(innerNode.getTextContent().equals("end_position")){
+                        End_position end_position = new End_position(x,y);
+                        end_positions.add(end_position);
                     }
                     x+= DISTANCE;
                 }
@@ -95,6 +99,11 @@ public class Board extends JPanel {
 
         g.drawImage(player.getImage(), player.getX(), player.getY(), this);
 
+        for(int i = 0; i < end_positions.size(); i++){
+            End_position item = end_positions.get(i);
+
+            g.drawImage(item.getImage(), item.getX(), item.getY(), this);
+        }
         for(int i = 0; i < boxes.size(); i++){
             Box item = boxes.get(i);
 

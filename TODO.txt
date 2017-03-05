@@ -1,2 +1,2 @@
--make boxes move when pushed
+-make boxes move when pushed (collision system for them)
 -draw board in the center of the screen and make game GUI scalable when user changes dimensions
