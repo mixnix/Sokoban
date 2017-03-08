@@ -123,29 +123,46 @@ public class Board extends JPanel {
             int key = e.getKeyCode();
 
             if(key == KeyEvent.VK_LEFT){
-               if(!isWallCollision(Direction.LEFT))
+                if(isPushableBoxCollision(Direction.LEFT)) {
+                    Box box = getBoxToTheLeft(player);
+                    box.move(Direction.LEFT);
+                    player.x += -DISTANCE;
+                }else if(!isNotMovable(Direction.LEFT))
                    player.x += -DISTANCE;
+
             }
 
             if(key == KeyEvent.VK_RIGHT){
-                if(!isWallCollision(Direction.RIGHT))
+                if(isPushableBoxCollision(Direction.RIGHT)) {
+                    Box box = getBoxToTheLeft(player);
+                    box.move(Direction.RIGHT);
+                    player.x += DISTANCE;
+                }else if(!isNotMovable(Direction.RIGHT))
                     player.x += DISTANCE;
             }
 
             if(key == KeyEvent.VK_UP){
-                if(!isWallCollision(Direction.UP))
+                if(isPushableBoxCollision(Direction.UP)) {
+                    Box box = getBoxToTheLeft(player);
+                    box.move(Direction.UP);
+                    player.y += -DISTANCE;
+                }else if(!isNotMovable(Direction.UP))
                     player.y += -DISTANCE;
             }
 
             if(key == KeyEvent.VK_DOWN){
-                if(!isWallCollision(Direction.DOWN))
+                if(isPushableBoxCollision(Direction.DOWN)) {
+                    Box box = getBoxToTheLeft(player);
+                    box.move(Direction.DOWN);
+                    player.y += DISTANCE;
+                }else if(!isNotMovable(Direction.DOWN))
                     player.y += DISTANCE;
             }
             repaint();
         }
     }
 
-    private boolean isWallCollision(Direction direction){
+    private boolean isNotMovable(Direction direction){
         switch (direction) {
             case LEFT:
                 for (int i = 0; i < walls.size(); i++) {
@@ -182,5 +199,14 @@ public class Board extends JPanel {
             default:
                 return false;
         }
+    }
+    private boolean isPushableBoxCollision(Direction direction){
+        //checks if theres is box in called direction and if theres nothing behind it so it can be pushed
+        return false;
+    }
+
+    private Box getBoxToTheLeft(Props props){
+        //returns Box that is adjacent to position of props
+        return null;
     }
 }

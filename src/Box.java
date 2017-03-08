@@ -12,5 +12,9 @@ public class Box extends Props {
         loadImage("box.PNG");
         getImageDimension();
     }
+
+    public void move(Direction direction){
+        //moves box to some side
+    }
 }
 
