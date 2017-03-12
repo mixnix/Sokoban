@@ -122,6 +122,16 @@ public class Board extends JPanel {
         public void keyPressed(KeyEvent e){
             int key = e.getKeyCode();
 
+
+            if(key == KeyEvent.VK_UP){
+                if(isPushableBoxCollision(Direction.UP)) {
+                    Box box = getBoxToTheDirection(Direction.UP);
+                    box.move(Direction.UP);
+                    player.y += -DISTANCE;
+                }else if(!isNotMovable(Direction.UP))
+                    player.y += -DISTANCE;
+            }
+
             if(key == KeyEvent.VK_LEFT){
                 if(isPushableBoxCollision(Direction.LEFT)) {
                     Box box = getBoxToTheDirection(Direction.LEFT);
@@ -141,14 +151,7 @@ public class Board extends JPanel {
                     player.x += DISTANCE;
             }
 
-            if(key == KeyEvent.VK_UP){
-                if(isPushableBoxCollision(Direction.UP)) {
-                    Box box = getBoxToTheDirection(Direction.UP);
-                    box.move(Direction.UP);
-                    player.y += -DISTANCE;
-                }else if(!isNotMovable(Direction.UP))
-                    player.y += -DISTANCE;
-            }
+
 
             if(key == KeyEvent.VK_DOWN){
                 if(isPushableBoxCollision(Direction.DOWN)) {
@@ -172,6 +175,7 @@ public class Board extends JPanel {
                     }
                 }
                 return false;
+
             case RIGHT:
                 for (int i = 0; i < walls.size(); i++) {
                     Wall wall = walls.get(i);
@@ -180,6 +184,7 @@ public class Board extends JPanel {
                     }
                 }
                 return false;
+
             case UP:
                 for (int i = 0; i < walls.size(); i++) {
                     Wall wall = walls.get(i);
@@ -188,6 +193,7 @@ public class Board extends JPanel {
                     }
                 }
                 return false;
+
             case DOWN:
                 for (int i = 0; i < walls.size(); i++) {
                     Wall wall = walls.get(i);
@@ -196,8 +202,10 @@ public class Board extends JPanel {
                     }
                 }
                 return false;
+
             default:
                 return false;
+
         }
     }
     private boolean isPushableBoxCollision(Direction direction){
@@ -209,15 +217,21 @@ public class Board extends JPanel {
                     boolean hej = isNothingBehind(Direction.DOWN, box);
                     if(player.getX()==box.getX() && player.getY()+DISTANCE == box.getY() && hej)
                         return true;
+                    break;
                 case UP:
                     if(player.getX()==box.getX() && player.getY()-DISTANCE == box.getY() && isNothingBehind(Direction.UP, box))
                         return true;
+                    break;
+
                 case LEFT:
                     if(player.getY()==box.getY() && player.getX()-DISTANCE == box.getX() && isNothingBehind(Direction.LEFT, box))
                         return true;
+                    break;
                 case RIGHT:
                     if(player.getY()==box.getY() && player.getX()+DISTANCE == box.getX() && isNothingBehind(Direction.RIGHT, box))
                         return true;
+                    break;
+
             }
         }
         return false;
