@@ -17,12 +17,18 @@ public class Box extends Props {
         switch (direction) {
             case LEFT:
                 x -= 15;
+                break;
             case RIGHT:
                 x += 15;
+                break;
             case UP:
                 y -= 15;
+                break;
+
             case DOWN:
                 y += 15;
+                break;
+
 
         }
     }
