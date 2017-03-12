@@ -124,7 +124,7 @@ public class Board extends JPanel {
 
             if(key == KeyEvent.VK_LEFT){
                 if(isPushableBoxCollision(Direction.LEFT)) {
-                    Box box = getBoxToTheLeft(player);
+                    Box box = getBoxToTheDirection(Direction.LEFT);
                     box.move(Direction.LEFT);
                     player.x += -DISTANCE;
                 }else if(!isNotMovable(Direction.LEFT))
@@ -134,7 +134,7 @@ public class Board extends JPanel {
 
             if(key == KeyEvent.VK_RIGHT){
                 if(isPushableBoxCollision(Direction.RIGHT)) {
-                    Box box = getBoxToTheLeft(player);
+                    Box box = getBoxToTheDirection(Direction.RIGHT);
                     box.move(Direction.RIGHT);
                     player.x += DISTANCE;
                 }else if(!isNotMovable(Direction.RIGHT))
@@ -143,7 +143,7 @@ public class Board extends JPanel {
 
             if(key == KeyEvent.VK_UP){
                 if(isPushableBoxCollision(Direction.UP)) {
-                    Box box = getBoxToTheLeft(player);
+                    Box box = getBoxToTheDirection(Direction.UP);
                     box.move(Direction.UP);
                     player.y += -DISTANCE;
                 }else if(!isNotMovable(Direction.UP))
@@ -152,7 +152,7 @@ public class Board extends JPanel {
 
             if(key == KeyEvent.VK_DOWN){
                 if(isPushableBoxCollision(Direction.DOWN)) {
-                    Box box = getBoxToTheLeft(player);
+                    Box box = getBoxToTheDirection(Direction.DOWN);
                     box.move(Direction.DOWN);
                     player.y += DISTANCE;
                 }else if(!isNotMovable(Direction.DOWN))
@@ -202,11 +202,73 @@ public class Board extends JPanel {
     }
     private boolean isPushableBoxCollision(Direction direction){
         //checks if theres is box in called direction and if theres nothing behind it so it can be pushed
+        //TODO I could do it more efficiently
+        for(Box box : boxes){
+            switch (direction){
+                case DOWN:
+                    boolean hej = isNothingBehind(Direction.DOWN, box);
+                    if(player.getX()==box.getX() && player.getY()+DISTANCE == box.getY() && hej)
+                        return true;
+                case UP:
+                    if(player.getX()==box.getX() && player.getY()-DISTANCE == box.getY() && isNothingBehind(Direction.UP, box))
+                        return true;
+                case LEFT:
+                    if(player.getY()==box.getY() && player.getX()-DISTANCE == box.getX() && isNothingBehind(Direction.LEFT, box))
+                        return true;
+                case RIGHT:
+                    if(player.getY()==box.getY() && player.getX()+DISTANCE == box.getX() && isNothingBehind(Direction.RIGHT, box))
+                        return true;
+            }
+        }
         return false;
     }
 
-    private Box getBoxToTheLeft(Props props){
-        //returns Box that is adjacent to position of props
+    private Box getBoxToTheDirection(Direction direction){
+        for(Box box : boxes){
+            switch (direction){
+                case DOWN:
+                    if(player.getX()==box.getX() && player.getY()+DISTANCE == box.getY())
+                        return box;
+                    break;
+                case UP:
+                    if(player.getX()==box.getX() && player.getY()-DISTANCE == box.getY())
+                        return box;
+                    break;
+                case LEFT:
+                    if(player.getY()==box.getY() && player.getX()-DISTANCE == box.getX())
+                        return box;
+                    break;
+                case RIGHT:
+                    if(player.getY()==box.getY() && player.getX()+DISTANCE == box.getX())
+                        return box;
+                    break;
+            }
+        }
         return null;
+    }
+
+    private boolean isNothingBehind(Direction direction, Box box){
+        //TODO wall detection not only boxes
+        for(Box temp : boxes){
+            switch (direction){
+                case DOWN:
+                    if(temp.getX()==box.getX() && box.getY()+DISTANCE == temp.getY())
+                        return false;
+                    break;
+                case UP:
+                    if(temp.getX()==box.getX() && box.getY()-DISTANCE == temp.getY())
+                        return false;
+                    break;
+                case LEFT:
+                    if(temp.getY()==box.getY() && box.getX()-DISTANCE == temp.getX())
+                        return false;
+                    break;
+                case RIGHT:
+                    if(temp.getY()==box.getY() && box.getX()+DISTANCE == temp.getX())
+                        return false;
+                    break;
+            }
+        }
+        return true;
     }
 }

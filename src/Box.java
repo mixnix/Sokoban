@@ -14,7 +14,17 @@ public class Box extends Props {
     }
 
     public void move(Direction direction){
-        //moves box to some side
+        switch (direction) {
+            case LEFT:
+                x -= 15;
+            case RIGHT:
+                x += 15;
+            case UP:
+                y -= 15;
+            case DOWN:
+                y += 15;
+
+        }
     }
 }
 
