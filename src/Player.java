@@ -7,10 +7,11 @@ import java.awt.event.KeyEvent;
  */
 public class Player extends Props{
 
-    private int dx;
-    private int dy;
-    //zobacz czy bez konstruktora tez dziala
-
+    /**
+     * konstruktor klasy dziedziczacej rozni sie tylko tym, ze laduje obrazek
+     * @param x
+     * @param y
+     */
     public Player(int x, int y){
         super(x, y);
 

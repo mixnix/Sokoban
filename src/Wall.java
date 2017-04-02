@@ -7,7 +7,11 @@ import java.awt.*;
 public class Wall extends Props {
 
 
-
+    /**
+     * konsturktor, od bazowego rozni sie tylko tym, ze laduje obrazek
+     * @param x
+     * @param y
+     */
     public Wall(int x, int y){
         super(x, y);
         //TODO delete line under this line probably useless

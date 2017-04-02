@@ -5,6 +5,9 @@ import java.awt.*;
  * Created by user_name on 24.02.2017.
  */
 public class SokobanExample extends JFrame {
+    /**
+     * inicjuje okno
+     */
     public SokobanExample(){
         add(new Board());
         setSize(1000,500);
@@ -14,6 +17,10 @@ public class SokobanExample extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
+    /**
+     * tworzy watek z gra i go wywoluje
+     * @param args
+     */
     public static void main(String[] args){
         EventQueue.invokeLater(new Runnable() {
             @Override
