@@ -18,16 +18,40 @@ import java.util.ArrayList;
  */
 public class Board extends JPanel {
 
+    /**
+    * Obiekt przedstawiajacy gracza
+     */
     Player player;
 
+    /**
+    * Lista ścian
+     */
     ArrayList<Wall> walls = new ArrayList<Wall>();
+    /**
+     * Lista skrzynek
+     */
     ArrayList<Box> boxes = new ArrayList<Box>();
+    /**
+     *lista pozycji koncowych
+     */
     ArrayList<End_position> end_positions = new ArrayList<End_position>();
+    /**
+     * stala dystansu pomiedzy poszczegolnymi obiektami na planszy
+     */
     private final int DISTANCE = 15;
+    /**
+     * stala oznaczajaca szerokosc poziomu
+     */
     public int LEVEL_WIDTH = 0;
+    /**
+     * stala oznaczajaca wysokosc poziomu
+     */
     public int LEVEL_HEIGHT = 0;
 
 
+    /**
+    * Konstruktor inicjujacy plansze gry
+     */
     public Board(){
 
         //init UI
@@ -41,6 +65,9 @@ public class Board extends JPanel {
         loadBoardFromXML();
     }
 
+    /**
+     * Laduje level z pliku konfiguracyjnego
+     */
     private void loadBoardFromXML(){
         int x = 0;
         int y = 0;
@@ -88,6 +115,10 @@ public class Board extends JPanel {
         }
     }
 
+    /**
+     * Metoda rysujaca level i ponownie rysujaca po kazdej zmianie
+     * @param g kontekst graficzny
+     */
     @Override
     public void paintComponent(Graphics g){
         super.paintComponent(g);
@@ -118,6 +149,9 @@ public class Board extends JPanel {
         }
     }
 
+    /**
+     * prywatna klasa odpowiedzialna za obslugiwanie zdarzen
+     */
     private class TAdapter extends KeyAdapter {
 
         @Override
@@ -167,6 +201,11 @@ public class Board extends JPanel {
         }
     }
 
+    /**
+     * kmetoda sprawdza czy gracz jest przy scianie
+     * @param direction kierunek w kierunku ktorego sprawdzamy czy gracz jest przy scianie np Direction.UP czy gracz styka sie gornie ze sciana
+     * @return zwraca true lub false w zaleznosci czy gracz jest przy scianei czy nie
+     */
     private boolean isNextToWall(Direction direction){
         switch (direction) {
             case LEFT:
@@ -210,6 +249,12 @@ public class Board extends JPanel {
 
         }
     }
+
+    /**
+     * Czy jest skrzynka w danym kierunku ktora da sie popchnac
+     * @param direction kierunek w ktorym sprawdzamy czy ejst skrzynka
+     * @return true - jest i da sie popchnac false - nie ma i nie da sie popchnac
+     */
     private boolean isPushableBoxCollision(Direction direction){
         //checks if theres is box in called direction and if theres nothing behind it so it can be pushed
         //TODO I could do it more efficiently
@@ -239,6 +284,11 @@ public class Board extends JPanel {
         return false;
     }
 
+    /**
+     * zwraca skrzynke w danym kierunku
+     * @param direction
+     * @return
+     */
     private Box getBoxToTheDirection(Direction direction){
         for(Box box : boxes){
             switch (direction){
@@ -263,6 +313,12 @@ public class Board extends JPanel {
         return null;
     }
 
+    /**
+     * czy za skrzynka jest cos jeszcze
+     * @param direction
+     * @param box
+     * @return
+     */
     private boolean isNothingBehind(Direction direction, Box box){
         //TODO wall detection not only boxes
         for(Box temp : boxes){
