@@ -1,2 +1,6 @@
 -make boxes move when pushed (collision system for them)
 -draw board in the center of the screen and make game GUI scalable when user changes dimensions
+-make stricter acces specifiers (public -> private) in clases ie. in Props.java
+-delete useless line in Wall.java
+-wykonuje sie else w clasie adapter nawet gdy jest skrzynka za skrzynka, tamta metoda sprwdza tylko sciany
+-w isNothingBehind jest TODO: musisz uzupelnic by tez sprawdzalo sciany

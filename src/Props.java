@@ -13,8 +13,8 @@ public class Props {
     protected Image image;
 
     public Props(int x, int y){
-        this.x = x;
-        this.y = y;
+       this.x = x;
+       this.y = y;
     }
 
     protected void loadImage(String imageName){

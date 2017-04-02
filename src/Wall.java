@@ -10,6 +10,7 @@ public class Wall extends Props {
 
     public Wall(int x, int y){
         super(x, y);
+        //TODO delete line under this line probably useless
         this.x = x;
 
         loadImage("wall.png");

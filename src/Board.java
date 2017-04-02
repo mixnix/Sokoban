@@ -8,6 +8,8 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
 
@@ -15,24 +17,15 @@ import java.util.ArrayList;
  * Created by user_name on 24.02.2017.
  */
 public class Board extends JPanel {
+
     Player player;
 
     ArrayList<Wall> walls = new ArrayList<Wall>();
     ArrayList<Box> boxes = new ArrayList<Box>();
     ArrayList<End_position> end_positions = new ArrayList<End_position>();
-
-    private String level = "##########\n" +
-            "#        #\n" +
-            "#        #\n" +
-            "#        #\n" +
-            "#        #\n" +
-            "#        #\n" +
-            "#        #\n" +
-            "#        #\n" +
-            "#        #\n" +
-            "##########";
-
     private final int DISTANCE = 15;
+    public int LEVEL_WIDTH = 0;
+    public int LEVEL_HEIGHT = 0;
 
 
     public Board(){
@@ -49,8 +42,8 @@ public class Board extends JPanel {
     }
 
     private void loadBoardFromXML(){
-        int x = 10;
-        int y = 10;
+        int x = 0;
+        int y = 0;
         int width = 0;
         try {
             File inputFile = new File("diagram.xml");
@@ -86,8 +79,10 @@ public class Board extends JPanel {
                 if(width < x){
                     width = x;
                 }
-                x = 10;
+                if(LEVEL_WIDTH < x) LEVEL_WIDTH = x;
+                x = 0;
             }
+            LEVEL_HEIGHT = y;
         }catch(Exception ex){
             ex.printStackTrace();
         }
@@ -96,24 +91,36 @@ public class Board extends JPanel {
     @Override
     public void paintComponent(Graphics g){
         super.paintComponent(g);
+        int screenWidth = this.getWidth();
+        int screenHeight = this.getHeight();
 
-        g.drawImage(player.getImage(), player.getX(), player.getY(), this);
 
         for(int i = 0; i < end_positions.size(); i++){
             End_position item = end_positions.get(i);
-
-            g.drawImage(item.getImage(), item.getX(), item.getY(), this);
+            g.drawImage(item.getImage().getScaledInstance(screenWidth/LEVEL_WIDTH,screenHeight/LEVEL_HEIGHT,Image.SCALE_DEFAULT), item.getX()*screenWidth/LEVEL_WIDTH, item.getY()*screenHeight/LEVEL_HEIGHT, this);
         }
+
+        g.drawImage(player.getImage().getScaledInstance(screenWidth/LEVEL_WIDTH,screenHeight/LEVEL_HEIGHT,Image.SCALE_DEFAULT), player.getX()*screenWidth/LEVEL_WIDTH, player.getY()*screenHeight/LEVEL_HEIGHT, this);
+
         for(int i = 0; i < boxes.size(); i++){
             Box item = boxes.get(i);
 
-            g.drawImage(item.getImage(), item.getX(), item.getY(), this);
+            g.drawImage(item.getImage().getScaledInstance(screenWidth/LEVEL_WIDTH,screenHeight/LEVEL_HEIGHT,Image.SCALE_DEFAULT), item.getX()*screenWidth/LEVEL_WIDTH, item.getY()*screenHeight/LEVEL_HEIGHT, this);
         }
         for(int i = 0; i < walls.size(); i++){
             Wall item = walls.get(i);
+            //g.drawImage(item.getImage(), item.getX(), item.getY(), this);
 
-            g.drawImage(item.getImage(), item.getX(), item.getY(), this);
+            Image scaled = item.getImage().getScaledInstance(screenWidth/LEVEL_WIDTH,screenHeight/LEVEL_HEIGHT,Image.SCALE_DEFAULT);
+            g.drawImage(scaled, item.getX()*screenWidth/LEVEL_WIDTH, item.getY()*screenHeight/LEVEL_HEIGHT, this);
+            g.setColor(Color.red);
+            //g.fillRect(item.getX(),item.getY(),item.getImage().getWidth(null),item.getImage().getWidth(null));
+            g.drawRect(item.getX()*screenWidth/LEVEL_WIDTH,item.getY()*screenHeight/LEVEL_HEIGHT,item.getImage().getWidth(null)*screenWidth/LEVEL_WIDTH,item.getImage().getWidth(null)*screenHeight/LEVEL_HEIGHT);
+
         }
+       // Wall item = walls.get(0);
+        //g.drawImage(item.getImage().getScaledInstance(screenWidth/LEVEL_WIDTH,screenHeight/LEVEL_HEIGHT,Image.SCALE_DEFAULT), 0, 0, this);
+
     }
 
     private class TAdapter extends KeyAdapter {
@@ -128,7 +135,7 @@ public class Board extends JPanel {
                     Box box = getBoxToTheDirection(Direction.UP);
                     box.move(Direction.UP);
                     player.y += -DISTANCE;
-                }else if(!isNotMovable(Direction.UP))
+                }else if(!isNextToWall(Direction.UP))
                     player.y += -DISTANCE;
             }
 
@@ -137,7 +144,7 @@ public class Board extends JPanel {
                     Box box = getBoxToTheDirection(Direction.LEFT);
                     box.move(Direction.LEFT);
                     player.x += -DISTANCE;
-                }else if(!isNotMovable(Direction.LEFT))
+                }else if(!isNextToWall(Direction.LEFT))
                    player.x += -DISTANCE;
 
             }
@@ -147,7 +154,7 @@ public class Board extends JPanel {
                     Box box = getBoxToTheDirection(Direction.RIGHT);
                     box.move(Direction.RIGHT);
                     player.x += DISTANCE;
-                }else if(!isNotMovable(Direction.RIGHT))
+                }else if(!isNextToWall(Direction.RIGHT))
                     player.x += DISTANCE;
             }
 
@@ -158,14 +165,14 @@ public class Board extends JPanel {
                     Box box = getBoxToTheDirection(Direction.DOWN);
                     box.move(Direction.DOWN);
                     player.y += DISTANCE;
-                }else if(!isNotMovable(Direction.DOWN))
+                }else if(!isNextToWall(Direction.DOWN))
                     player.y += DISTANCE;
             }
             repaint();
         }
     }
 
-    private boolean isNotMovable(Direction direction){
+    private boolean isNextToWall(Direction direction){
         switch (direction) {
             case LEFT:
                 for (int i = 0; i < walls.size(); i++) {

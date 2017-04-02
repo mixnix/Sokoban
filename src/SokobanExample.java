@@ -8,7 +8,6 @@ public class SokobanExample extends JFrame {
     public SokobanExample(){
         add(new Board());
         setSize(1000,500);
-        setResizable(false);
 
         setTitle("Sokoban");
         setLocationRelativeTo(null);
