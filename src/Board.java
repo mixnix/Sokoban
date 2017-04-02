@@ -97,30 +97,25 @@ public class Board extends JPanel {
 
         for(int i = 0; i < end_positions.size(); i++){
             End_position item = end_positions.get(i);
-            g.drawImage(item.getImage().getScaledInstance(screenWidth/LEVEL_WIDTH,screenHeight/LEVEL_HEIGHT,Image.SCALE_DEFAULT), item.getX()*screenWidth/LEVEL_WIDTH, item.getY()*screenHeight/LEVEL_HEIGHT, this);
+            g.setColor(Color.green);
+            g.fillRect(item.getX()*screenWidth/LEVEL_WIDTH,item.getY()*screenHeight/LEVEL_HEIGHT,item.getImage().getWidth(null)*screenWidth/LEVEL_WIDTH,item.getImage().getWidth(null)*screenHeight/LEVEL_HEIGHT);
         }
 
-        g.drawImage(player.getImage().getScaledInstance(screenWidth/LEVEL_WIDTH,screenHeight/LEVEL_HEIGHT,Image.SCALE_DEFAULT), player.getX()*screenWidth/LEVEL_WIDTH, player.getY()*screenHeight/LEVEL_HEIGHT, this);
+        g.setColor(Color.white);
+        g.fillRect(player.getX()*screenWidth/LEVEL_WIDTH,player.getY()*screenHeight/LEVEL_HEIGHT,player.getImage().getWidth(null)*screenWidth/LEVEL_WIDTH,player.getImage().getWidth(null)*screenHeight/LEVEL_HEIGHT);
+
 
         for(int i = 0; i < boxes.size(); i++){
             Box item = boxes.get(i);
-
-            g.drawImage(item.getImage().getScaledInstance(screenWidth/LEVEL_WIDTH,screenHeight/LEVEL_HEIGHT,Image.SCALE_DEFAULT), item.getX()*screenWidth/LEVEL_WIDTH, item.getY()*screenHeight/LEVEL_HEIGHT, this);
+            g.setColor(Color.yellow);
+            g.fillRect(item.getX()*screenWidth/LEVEL_WIDTH,item.getY()*screenHeight/LEVEL_HEIGHT,item.getImage().getWidth(null)*screenWidth/LEVEL_WIDTH,item.getImage().getWidth(null)*screenHeight/LEVEL_HEIGHT);
         }
         for(int i = 0; i < walls.size(); i++){
             Wall item = walls.get(i);
-            //g.drawImage(item.getImage(), item.getX(), item.getY(), this);
 
-            Image scaled = item.getImage().getScaledInstance(screenWidth/LEVEL_WIDTH,screenHeight/LEVEL_HEIGHT,Image.SCALE_DEFAULT);
-            g.drawImage(scaled, item.getX()*screenWidth/LEVEL_WIDTH, item.getY()*screenHeight/LEVEL_HEIGHT, this);
             g.setColor(Color.red);
-            //g.fillRect(item.getX(),item.getY(),item.getImage().getWidth(null),item.getImage().getWidth(null));
-            g.drawRect(item.getX()*screenWidth/LEVEL_WIDTH,item.getY()*screenHeight/LEVEL_HEIGHT,item.getImage().getWidth(null)*screenWidth/LEVEL_WIDTH,item.getImage().getWidth(null)*screenHeight/LEVEL_HEIGHT);
-
+            g.fillRect(item.getX()*screenWidth/LEVEL_WIDTH,item.getY()*screenHeight/LEVEL_HEIGHT,item.getImage().getWidth(null)*screenWidth/LEVEL_WIDTH,item.getImage().getWidth(null)*screenHeight/LEVEL_HEIGHT);
         }
-       // Wall item = walls.get(0);
-        //g.drawImage(item.getImage().getScaledInstance(screenWidth/LEVEL_WIDTH,screenHeight/LEVEL_HEIGHT,Image.SCALE_DEFAULT), 0, 0, this);
-
     }
 
     private class TAdapter extends KeyAdapter {
