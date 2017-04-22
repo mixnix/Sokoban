@@ -164,7 +164,7 @@ public class Board extends JPanel {
                     Box box = getBoxToTheDirection(Direction.UP);
                     box.move(Direction.UP);
                     player.y += -DISTANCE;
-                }else if(!isNextToWall(Direction.UP))
+                }else if(!isNextToWall(Direction.UP) && (getBoxToTheDirection(Direction.UP)==null))
                     player.y += -DISTANCE;
             }
 
@@ -173,7 +173,7 @@ public class Board extends JPanel {
                     Box box = getBoxToTheDirection(Direction.LEFT);
                     box.move(Direction.LEFT);
                     player.x += -DISTANCE;
-                }else if(!isNextToWall(Direction.LEFT))
+                }else if(!isNextToWall(Direction.LEFT) && (getBoxToTheDirection(Direction.LEFT)==null))
                    player.x += -DISTANCE;
 
             }
@@ -183,7 +183,7 @@ public class Board extends JPanel {
                     Box box = getBoxToTheDirection(Direction.RIGHT);
                     box.move(Direction.RIGHT);
                     player.x += DISTANCE;
-                }else if(!isNextToWall(Direction.RIGHT))
+                }else if(!isNextToWall(Direction.RIGHT) && (getBoxToTheDirection(Direction.RIGHT)==null))
                     player.x += DISTANCE;
             }
 
@@ -194,7 +194,7 @@ public class Board extends JPanel {
                     Box box = getBoxToTheDirection(Direction.DOWN);
                     box.move(Direction.DOWN);
                     player.y += DISTANCE;
-                }else if(!isNextToWall(Direction.DOWN))
+                }else if(!isNextToWall(Direction.DOWN) && (getBoxToTheDirection(Direction.DOWN)==null))
                     player.y += DISTANCE;
             }
             repaint();
@@ -322,6 +322,26 @@ public class Board extends JPanel {
     private boolean isNothingBehind(Direction direction, Box box){
         //TODO wall detection not only boxes
         for(Box temp : boxes){
+            switch (direction){
+                case DOWN:
+                    if(temp.getX()==box.getX() && box.getY()+DISTANCE == temp.getY())
+                        return false;
+                    break;
+                case UP:
+                    if(temp.getX()==box.getX() && box.getY()-DISTANCE == temp.getY())
+                        return false;
+                    break;
+                case LEFT:
+                    if(temp.getY()==box.getY() && box.getX()-DISTANCE == temp.getX())
+                        return false;
+                    break;
+                case RIGHT:
+                    if(temp.getY()==box.getY() && box.getX()+DISTANCE == temp.getX())
+                        return false;
+                    break;
+            }
+        }
+        for(Wall temp : walls){
             switch (direction){
                 case DOWN:
                     if(temp.getX()==box.getX() && box.getY()+DISTANCE == temp.getY())
