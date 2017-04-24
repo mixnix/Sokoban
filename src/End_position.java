@@ -11,7 +11,7 @@ public class End_position extends Props {
      */
     public End_position(int x, int y){
         super(x, y);
-        this.x = x;
+        this.destinationX = x;
 
         loadImage("end_position.PNG");
         getImageDimension();

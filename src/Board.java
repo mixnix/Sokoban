@@ -8,21 +8,23 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.geom.AffineTransform;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
 
 /**
  * Created by user_name on 24.02.2017.
  */
-public class Board extends JPanel {
+public class Board extends JPanel implements Runnable {
 
     /**
     * Obiekt przedstawiajacy gracza
      */
     Player player;
 
+    /**
+     * Dzieki temu watkowi sa animacje
+     */
+    private Thread animator;
     /**
     * Lista ścian
      */
@@ -47,7 +49,10 @@ public class Board extends JPanel {
      * stala oznaczajaca wysokosc poziomu
      */
     public int LEVEL_HEIGHT = 0;
-
+    /**
+     * stala mówiąca o tym czy jesteśmy w grze
+     */
+    public boolean ingame = true;
 
     /**
     * Konstruktor inicjujacy plansze gry
@@ -122,30 +127,82 @@ public class Board extends JPanel {
     @Override
     public void paintComponent(Graphics g){
         super.paintComponent(g);
-        int screenWidth = this.getWidth();
-        int screenHeight = this.getHeight();
+        if(ingame){
+
+                int screenWidth = this.getWidth();
+                int screenHeight = this.getHeight();
 
 
-        for(int i = 0; i < end_positions.size(); i++){
-            End_position item = end_positions.get(i);
-            g.setColor(Color.green);
-            g.fillRect(item.getX()*screenWidth/LEVEL_WIDTH,item.getY()*screenHeight/LEVEL_HEIGHT,item.getImage().getWidth(null)*screenWidth/LEVEL_WIDTH,item.getImage().getWidth(null)*screenHeight/LEVEL_HEIGHT);
+                for(int i = 0; i < end_positions.size(); i++){
+                    End_position item = end_positions.get(i);
+                    g.setColor(Color.green);
+                    g.fillRect(item.getDestinationX()*screenWidth/LEVEL_WIDTH,item.getDestinationY()*screenHeight/LEVEL_HEIGHT,item.getImage().getWidth(null)*screenWidth/LEVEL_WIDTH,item.getImage().getWidth(null)*screenHeight/LEVEL_HEIGHT);
+                }
+
+                g.setColor(Color.white);
+                g.fillRect(player.getCurrentX()*screenWidth/LEVEL_WIDTH,player.getCurrentY()*screenHeight/LEVEL_HEIGHT,player.getImage().getWidth(null)*screenWidth/LEVEL_WIDTH,player.getImage().getWidth(null)*screenHeight/LEVEL_HEIGHT);
+
+
+                for(int i = 0; i < boxes.size(); i++){
+                    Box item = boxes.get(i);
+                    g.setColor(Color.yellow);
+                    g.fillRect(item.getCurrentX()*screenWidth/LEVEL_WIDTH,item.getCurrentY()*screenHeight/LEVEL_HEIGHT,item.getImage().getWidth(null)*screenWidth/LEVEL_WIDTH,item.getImage().getWidth(null)*screenHeight/LEVEL_HEIGHT);
+                }
+                for(int i = 0; i < walls.size(); i++){
+                    Wall item = walls.get(i);
+
+                    g.setColor(Color.red);
+                    g.fillRect(item.getDestinationX()*screenWidth/LEVEL_WIDTH,item.getDestinationY()*screenHeight/LEVEL_HEIGHT,item.getImage().getWidth(null)*screenWidth/LEVEL_WIDTH,item.getImage().getWidth(null)*screenHeight/LEVEL_HEIGHT);
+
+            }
+
         }
 
-        g.setColor(Color.white);
-        g.fillRect(player.getX()*screenWidth/LEVEL_WIDTH,player.getY()*screenHeight/LEVEL_HEIGHT,player.getImage().getWidth(null)*screenWidth/LEVEL_WIDTH,player.getImage().getWidth(null)*screenHeight/LEVEL_HEIGHT);
+    }
 
+    /**
+     * sprawdza czy wszystko juz zaanimowalo swoj ruch
+     * @return
+     */
+    boolean isAllOnDestination(){
+
+        if(player.getCurrentX()-player.getDestinationX()!=0 || player.getCurrentY()-player.getDestinationY()!=0)
+            return false;
 
         for(int i = 0; i < boxes.size(); i++){
             Box item = boxes.get(i);
-            g.setColor(Color.yellow);
-            g.fillRect(item.getX()*screenWidth/LEVEL_WIDTH,item.getY()*screenHeight/LEVEL_HEIGHT,item.getImage().getWidth(null)*screenWidth/LEVEL_WIDTH,item.getImage().getWidth(null)*screenHeight/LEVEL_HEIGHT);
+            if(item.getCurrentX()-item.getDestinationX()!=0 || item.getCurrentY()-item.getDestinationY()!=0)
+                return false;
         }
-        for(int i = 0; i < walls.size(); i++){
-            Wall item = walls.get(i);
+        return true;
+    }
 
-            g.setColor(Color.red);
-            g.fillRect(item.getX()*screenWidth/LEVEL_WIDTH,item.getY()*screenHeight/LEVEL_HEIGHT,item.getImage().getWidth(null)*screenWidth/LEVEL_WIDTH,item.getImage().getWidth(null)*screenHeight/LEVEL_HEIGHT);
+    /**
+     * zmienia pozycje wszystkich rzeczy o troche by sprawic wrazenie animacji
+     */
+    public void moveEverythingALittle(){
+        //ponieważ wszystko idealnie jest zsynchronizowane to else nie wykona sie gdy current = getDestination
+        if(player.getCurrentX()<player.getDestinationX())
+            player.currentX += 1;
+        else if(player.getCurrentX()>player.getDestinationX())
+            player.currentX -= 1;
+
+        if( player.getCurrentY()<player.getDestinationY())
+            player.currentY += 1;
+        else if( player.getCurrentY()>player.getDestinationY())
+            player.currentY -= 1;
+
+        for(int i = 0; i < boxes.size(); i++){
+            Box item = boxes.get(i);
+            if(item.getCurrentX()<item.getDestinationX())
+                item.currentX += 1;
+            else if(item.getCurrentX()>item.getDestinationX())
+                item.currentX -= 1;
+
+            if( item.getCurrentY()<item.getDestinationY())
+                item.currentY += 1;
+            else if ( item.getCurrentY()>item.getDestinationY())
+                item.currentY -= 1;
         }
     }
 
@@ -163,18 +220,18 @@ public class Board extends JPanel {
                 if(isPushableBoxCollision(Direction.UP)) {
                     Box box = getBoxToTheDirection(Direction.UP);
                     box.move(Direction.UP);
-                    player.y += -DISTANCE;
+                    player.destinationY += -DISTANCE;
                 }else if(!isNextToWall(Direction.UP) && (getBoxToTheDirection(Direction.UP)==null))
-                    player.y += -DISTANCE;
+                    player.destinationY += -DISTANCE;
             }
 
             if(key == KeyEvent.VK_LEFT){
                 if(isPushableBoxCollision(Direction.LEFT)) {
                     Box box = getBoxToTheDirection(Direction.LEFT);
                     box.move(Direction.LEFT);
-                    player.x += -DISTANCE;
+                    player.destinationX += -DISTANCE;
                 }else if(!isNextToWall(Direction.LEFT) && (getBoxToTheDirection(Direction.LEFT)==null))
-                   player.x += -DISTANCE;
+                   player.destinationX += -DISTANCE;
 
             }
 
@@ -182,9 +239,9 @@ public class Board extends JPanel {
                 if(isPushableBoxCollision(Direction.RIGHT)) {
                     Box box = getBoxToTheDirection(Direction.RIGHT);
                     box.move(Direction.RIGHT);
-                    player.x += DISTANCE;
+                    player.destinationX += DISTANCE;
                 }else if(!isNextToWall(Direction.RIGHT) && (getBoxToTheDirection(Direction.RIGHT)==null))
-                    player.x += DISTANCE;
+                    player.destinationX += DISTANCE;
             }
 
 
@@ -193,13 +250,15 @@ public class Board extends JPanel {
                 if(isPushableBoxCollision(Direction.DOWN)) {
                     Box box = getBoxToTheDirection(Direction.DOWN);
                     box.move(Direction.DOWN);
-                    player.y += DISTANCE;
+                    player.destinationY += DISTANCE;
                 }else if(!isNextToWall(Direction.DOWN) && (getBoxToTheDirection(Direction.DOWN)==null))
-                    player.y += DISTANCE;
+                    player.destinationY += DISTANCE;
             }
-            repaint();
+
+            //checkForVictory();
         }
     }
+
 
     /**
      * kmetoda sprawdza czy gracz jest przy scianie
@@ -251,6 +310,69 @@ public class Board extends JPanel {
     }
 
     /**
+     * tworzy watek i go rozpoczyna
+     */
+    @Override
+    public void addNotify(){
+        super.addNotify();
+
+        animator = new Thread(this);
+        animator.start();
+    }
+
+    @Override
+    public void run(){
+        long beforeTime, timeDiff, sleep;
+        beforeTime = System.currentTimeMillis();
+        while (true){
+            if (!ingame) {
+                System.exit(0);
+                break;
+            }
+            repaint();
+            if(!isAllOnDestination())
+                moveEverythingALittle();
+
+            timeDiff = System.currentTimeMillis() - beforeTime;
+            sleep = 5 - timeDiff;
+
+            if(sleep < 0)
+                sleep = 2;
+
+            try{
+                Thread.sleep(sleep);
+            } catch (InterruptedException e){
+                System.out.println("Interrupted: " + e.getMessage());
+            }
+
+            beforeTime = System.currentTimeMillis();
+
+            if(checkForVictory())
+                ingame = false;
+        }
+    }
+
+    public boolean checkForVictory(){
+        boolean[] winningTable = new boolean[end_positions.size()];
+        for(int ij = 0; ij<winningTable.length; ij++)
+            winningTable[ij]=false;
+
+        for(int ij = 0; ij<end_positions.size();ij++) {
+            for (Box box : boxes) {
+                if(box.getCurrentY()==end_positions.get(ij).getCurrentY()&&box.getCurrentX()==end_positions.get(ij).getCurrentX())
+                    winningTable[ij]=true;
+            }
+        }
+        for(int ij = 0; ij<winningTable.length; ij++)
+            if(winningTable[ij]==false)
+                return false;
+
+        return true;
+
+    }
+
+
+    /**
      * Czy jest skrzynka w danym kierunku ktora da sie popchnac
      * @param direction kierunek w ktorym sprawdzamy czy ejst skrzynka
      * @return true - jest i da sie popchnac false - nie ma i nie da sie popchnac
@@ -262,20 +384,20 @@ public class Board extends JPanel {
             switch (direction){
                 case DOWN:
                     boolean hej = isNothingBehind(Direction.DOWN, box);
-                    if(player.getX()==box.getX() && player.getY()+DISTANCE == box.getY() && hej)
+                    if(player.getDestinationX()==box.getDestinationX() && player.getDestinationY()+DISTANCE == box.getDestinationY() && hej)
                         return true;
                     break;
                 case UP:
-                    if(player.getX()==box.getX() && player.getY()-DISTANCE == box.getY() && isNothingBehind(Direction.UP, box))
+                    if(player.getDestinationX()==box.getDestinationX() && player.getDestinationY()-DISTANCE == box.getDestinationY() && isNothingBehind(Direction.UP, box))
                         return true;
                     break;
 
                 case LEFT:
-                    if(player.getY()==box.getY() && player.getX()-DISTANCE == box.getX() && isNothingBehind(Direction.LEFT, box))
+                    if(player.getDestinationY()==box.getDestinationY() && player.getDestinationX()-DISTANCE == box.getDestinationX() && isNothingBehind(Direction.LEFT, box))
                         return true;
                     break;
                 case RIGHT:
-                    if(player.getY()==box.getY() && player.getX()+DISTANCE == box.getX() && isNothingBehind(Direction.RIGHT, box))
+                    if(player.getDestinationY()==box.getDestinationY() && player.getDestinationX()+DISTANCE == box.getDestinationX() && isNothingBehind(Direction.RIGHT, box))
                         return true;
                     break;
 
@@ -293,19 +415,19 @@ public class Board extends JPanel {
         for(Box box : boxes){
             switch (direction){
                 case DOWN:
-                    if(player.getX()==box.getX() && player.getY()+DISTANCE == box.getY())
+                    if(player.getDestinationX()==box.getDestinationX() && player.getDestinationY()+DISTANCE == box.getDestinationY())
                         return box;
                     break;
                 case UP:
-                    if(player.getX()==box.getX() && player.getY()-DISTANCE == box.getY())
+                    if(player.getDestinationX()==box.getDestinationX() && player.getDestinationY()-DISTANCE == box.getDestinationY())
                         return box;
                     break;
                 case LEFT:
-                    if(player.getY()==box.getY() && player.getX()-DISTANCE == box.getX())
+                    if(player.getDestinationY()==box.getDestinationY() && player.getDestinationX()-DISTANCE == box.getDestinationX())
                         return box;
                     break;
                 case RIGHT:
-                    if(player.getY()==box.getY() && player.getX()+DISTANCE == box.getX())
+                    if(player.getDestinationY()==box.getDestinationY() && player.getDestinationX()+DISTANCE == box.getDestinationX())
                         return box;
                     break;
             }
@@ -324,19 +446,19 @@ public class Board extends JPanel {
         for(Box temp : boxes){
             switch (direction){
                 case DOWN:
-                    if(temp.getX()==box.getX() && box.getY()+DISTANCE == temp.getY())
+                    if(temp.getDestinationX()==box.getDestinationX() && box.getDestinationY()+DISTANCE == temp.getDestinationY())
                         return false;
                     break;
                 case UP:
-                    if(temp.getX()==box.getX() && box.getY()-DISTANCE == temp.getY())
+                    if(temp.getDestinationX()==box.getDestinationX() && box.getDestinationY()-DISTANCE == temp.getDestinationY())
                         return false;
                     break;
                 case LEFT:
-                    if(temp.getY()==box.getY() && box.getX()-DISTANCE == temp.getX())
+                    if(temp.getDestinationY()==box.getDestinationY() && box.getDestinationX()-DISTANCE == temp.getDestinationX())
                         return false;
                     break;
                 case RIGHT:
-                    if(temp.getY()==box.getY() && box.getX()+DISTANCE == temp.getX())
+                    if(temp.getDestinationY()==box.getDestinationY() && box.getDestinationX()+DISTANCE == temp.getDestinationX())
                         return false;
                     break;
             }
@@ -344,19 +466,19 @@ public class Board extends JPanel {
         for(Wall temp : walls){
             switch (direction){
                 case DOWN:
-                    if(temp.getX()==box.getX() && box.getY()+DISTANCE == temp.getY())
+                    if(temp.getDestinationX()==box.getDestinationX() && box.getDestinationY()+DISTANCE == temp.getDestinationY())
                         return false;
                     break;
                 case UP:
-                    if(temp.getX()==box.getX() && box.getY()-DISTANCE == temp.getY())
+                    if(temp.getDestinationX()==box.getDestinationX() && box.getDestinationY()-DISTANCE == temp.getDestinationY())
                         return false;
                     break;
                 case LEFT:
-                    if(temp.getY()==box.getY() && box.getX()-DISTANCE == temp.getX())
+                    if(temp.getDestinationY()==box.getDestinationY() && box.getDestinationX()-DISTANCE == temp.getDestinationX())
                         return false;
                     break;
                 case RIGHT:
-                    if(temp.getY()==box.getY() && box.getX()+DISTANCE == temp.getX())
+                    if(temp.getDestinationY()==box.getDestinationY() && box.getDestinationX()+DISTANCE == temp.getDestinationX())
                         return false;
                     break;
             }

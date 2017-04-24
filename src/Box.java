@@ -11,7 +11,7 @@ public class Box extends Props {
      */
     public Box(int x, int y){
         super(x, y);
-        this.x = x;
+        this.destinationX = x;
 
         loadImage("box.PNG");
         getImageDimension();
@@ -24,17 +24,17 @@ public class Box extends Props {
     public void move(Direction direction){
         switch (direction) {
             case LEFT:
-                x -= 15;
+                destinationX -= 15;
                 break;
             case RIGHT:
-                x += 15;
+                destinationX += 15;
                 break;
             case UP:
-                y -= 15;
+                destinationY -= 15;
                 break;
 
             case DOWN:
-                y += 15;
+                destinationY += 15;
                 break;
 
 

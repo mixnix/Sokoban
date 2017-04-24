@@ -6,14 +6,24 @@ import java.awt.*;
  */
 public class Props {
 
+
+    /**
+     * obecna pozycja elementu w pionie
+     */
+    protected int currentX;
+    /**
+     * obecna pozycja elementu w poziomie
+     */
+    protected int currentY;
+
     /**
      * pozycja w poziomie elementu
      */
-    protected int x;
+    protected int destinationX;
     /**
      * pozycja w pionie elementu
      */
-    protected int y;
+    protected int destinationY;
     /**
      * szerokosc elementu
      */
@@ -29,12 +39,14 @@ public class Props {
 
     /**
      * konsturktor inicjujacy pozycje w pionie i w poziomie
-     * @param x
-     * @param y
+     * @param destinationX
+     * @param destinationY
      */
-    public Props(int x, int y){
-       this.x = x;
-       this.y = y;
+    public Props(int destinationX, int destinationY){
+       this.destinationX = destinationX;
+       this.destinationY = destinationY;
+       currentX = destinationX;
+       currentY = destinationY;
     }
 
     /**
@@ -64,14 +76,25 @@ public class Props {
      * zwraca pozycje w poziomie elementu
      * @return
      */
-    public int getX(){return x;}
+    public int getDestinationX(){return destinationX;}
 
     /**
      * zwraca pozycje w pionie elementu
      * @return
      */
-    public int getY(){return y;}
+    public int getDestinationY(){return destinationY;}
 
+    /**
+     * zwraca obecna pozycje w poziomie
+     * @return
+     */
+    public int getCurrentX(){return currentX;}
+
+    /**
+     * zwraca obecna pozycje w pionie
+     * @return
+     */
+    public int getCurrentY(){return currentY;}
 
     /**
      * sprawdza czy element ma kolizje z innym elementem w lewo
@@ -79,7 +102,7 @@ public class Props {
      * @return
      */
     public boolean isLeftCollision(Props a){
-        if(this.getX()-15==a.getX() && this.getY()  == a.getY())
+        if(this.getDestinationX()-15==a.getDestinationX() && this.getDestinationY()  == a.getDestinationY())
             return true;
         else
             return false;
@@ -90,7 +113,7 @@ public class Props {
      * @return
      */
     public boolean isRightCollision(Props a){
-        if(this.getX()+15==a.getX() && this.getY() == a.getY())
+        if(this.getDestinationX()+15==a.getDestinationX() && this.getDestinationY() == a.getDestinationY())
             return true;
         else
             return false;
@@ -101,7 +124,7 @@ public class Props {
      * @return
      */
     public boolean isUpCollision(Props a){
-        if(this.getY()-15==a.getY() && this.getX() == a.getX())
+        if(this.getDestinationY()-15==a.getDestinationY() && this.getDestinationX() == a.getDestinationX())
             return true;
         else
             return false;
@@ -112,7 +135,7 @@ public class Props {
      * @return
      */
     public boolean isDownCollision(Props a){
-        if(this.getY()+15==a.getY() && this.getX() == a.getX())
+        if(this.getDestinationY()+15==a.getDestinationY() && this.getDestinationX() == a.getDestinationX())
             return true;
         else
             return false;
