@@ -5,6 +5,8 @@ import java.net.Socket;
  * Created by user_name on 21/05/2017.
  */
 public class Program {
+    private static MenuWindow menuWindow;
+
     public static void run(Socket socket){
         if(socket!=null){
             getSettings(socket);
@@ -23,14 +25,15 @@ public class Program {
                     break;
             }
         }
-        utworzMenu(socket);
+        menuWindow = new MenuWindow(socket);
+        menuWindow.setVisible(true);
     }
 
     public static void getSettings(Socket socket){
 
     }
 
-    public static void utworzMenu(Socket socket){
+    public static void createMenu(Socket socket){
         SokobanExample.main(new String[0]);
     }
 }
