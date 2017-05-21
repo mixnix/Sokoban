@@ -5,6 +5,10 @@ import java.net.Socket;
  */
 public class Program {
     public static void run(Socket socket){
+        if(socket!=null){
+            getSettings(socket);
+
+        }
         SokobanExample.main(new String[0]);
     }
 }
