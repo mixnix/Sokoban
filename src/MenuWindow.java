@@ -85,7 +85,6 @@ public class MenuWindow extends JFrame implements ActionListener{
             setLayout(new BorderLayout());
             setPreferredSize(new Dimension(Constants.menuWidth, Constants.menuHeight));
             zasadyArray = new ArrayList<String>();
-            loadHelp();
         }
     }
 }
