@@ -2,7 +2,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.lang.reflect.Array;
 import java.net.Socket;
+import java.util.ArrayList;
 
 /**
  * Created by user_name on 21/05/2017.
@@ -71,6 +73,19 @@ public class MenuWindow extends JFrame implements ActionListener{
             case "NewGame":
                 this.setVisible(false);
                 SokobanExample.main(new String[0]);
+        }
+    }
+
+    private class HelpPanel extends JPanel{
+        private String title;
+
+        private ArrayList<String> zasadyArray;
+
+        public HelpPanel(ActionListener menuListener, Socket socket){
+            setLayout(new BorderLayout());
+            setPreferredSize(new Dimension(Constants.menuWidth, Constants.menuHeight));
+            zasadyArray = new ArrayList<String>();
+            loadHelp();
         }
     }
 }
