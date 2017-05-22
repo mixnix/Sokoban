@@ -78,7 +78,7 @@ public class Board extends JPanel implements Runnable {
         int y = 0;
         int width = 0;
         try {
-            File inputFile = new File("diagram.xml");
+            File inputFile = new File("Config\\level1.xml");
             DocumentBuilderFactory dbFactory
                     = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();

@@ -14,8 +14,8 @@ public class Main {
     private static Socket createSocket(){
         try{
             BufferedReader br = new BufferedReader(new FileReader("Config\\server.txt"));
-            port = Integer.parseInt(br.readLine());
             IPAdress = br.readLine();
+            port = Integer.parseInt(br.readLine());
             Socket serverSocket = new Socket(IPAdress, port);
             OutputStream output = serverSocket.getOutputStream();
             PrintWriter outputWriter = new PrintWriter(output, true);
