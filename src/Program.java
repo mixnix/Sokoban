@@ -6,8 +6,15 @@ import java.net.Socket;
  * Created by user_name on 21/05/2017.
  */
 public class Program {
+    /**
+     * okno menu
+     */
     private static MenuWindow menuWindow;
 
+    /**
+     * metoda inicjalizująca zmienne i tworzaca okno
+     * @param socket
+     */
     public static void run(Socket socket){
         if(socket!=null){
             getSettings(socket);
@@ -31,6 +38,10 @@ public class Program {
         menuWindow.setVisible(true);
     }
 
+    /**
+     * metoda pobierajaca zmienne okreslajace wyglad menu
+     * @param socket
+     */
     public static void getSettings(Socket socket){
         try{
             OutputStream os = socket.getOutputStream();
@@ -49,6 +60,10 @@ public class Program {
 
     }
 
+    /**
+     * metoda pobierajaca zmienne okreslajace wyglad poziomu
+     * @param socket
+     */
     public static void getLevel(Socket socket){
         try{
 
@@ -72,9 +87,5 @@ public class Program {
         catch (IOException e){
             System.out.println("Błąd metody get level"+e);
         }
-    }
-
-    public static void createMenu(Socket socket){
-        SokobanExample.main(new String[0]);
     }
 }

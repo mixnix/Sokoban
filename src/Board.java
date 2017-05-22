@@ -334,7 +334,7 @@ public class Board extends JPanel implements Runnable {
                 moveEverythingALittle();
 
             timeDiff = System.currentTimeMillis() - beforeTime;
-            sleep = 10 - timeDiff;
+            sleep = 5 - timeDiff;
 
             if(sleep < 0)
                 sleep = 2;

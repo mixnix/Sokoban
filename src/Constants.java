@@ -9,16 +9,46 @@ import java.io.FileNotFoundException;
  * Created by user_name on 21/05/2017.
  */
 public class Constants {
+    /**
+     * plik zawierajacy wszystkie zmienne
+     */
     public static final String xmlConfigFile="Config\\config.xml";
+    /**
+     * szerokość głównego menu
+     */
     public static int menuWidth;
+    /**
+     * wysokość głównego menu
+     */
     public static int menuHeight;
+    /**
+     * tytuł menu
+     */
     public static String menuTitle;
+    /**
+     * tytuł gry
+     */
     public static String gameTitle;
+    /**
+     * tekst przycisku nowej gry
+     */
     public static String jbNewGameText;
+    /**
+     * tekst przycisku najwyższych wyników
+     */
     public static String jbHighScoreText;
+    /**
+     * tekst przycisku pomocy
+     */
     public static String jbHelpText;
+    /**
+     * tekst przycisku wyjscia
+     */
     public static String jbExitText;
 
+    /**
+     * laduje wszystkie zmienne z pliku
+     */
     public static void loadConstants(){
         try {
             File xmlInputFile = new File(xmlConfigFile);

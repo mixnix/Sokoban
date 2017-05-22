@@ -10,24 +10,46 @@ import java.util.ArrayList;
  * Created by user_name on 21/05/2017.
  */
 public class MenuWindow extends JFrame implements ActionListener{
+    /**
+     * port na którym łączymy się z serwerem
+     */
     private Socket socket;
-    private boolean isConnected;
+
+    /**
+     * okresla rozmiar okna menu
+     */
     private Dimension menuSize;
+    /**
+     * przycisk zamykajacy program
+     */
     private JButton jbExit;
+    /**
+     * przycisk rozpoczynajacy nowa gre
+     */
     private JButton jbNewGame;
+    /**
+     * przycisk wyswietlajacy tablice najlepszych wynikow
+     */
     private JButton jbHighScores;
+    /**
+     * przycisk wyswietlajacy pomoc
+     */
     private JButton jbHelp;
 
+    /**
+     * panel na którym jest narysowane menu
+     */
     private JPanel menuPanel;
     //oddzielna klasa odpowiedzialna za highscore
     //oddzielna klasa odpowiedzialna za pomoc
 
 
-
-
+    /**
+     * konstruktor ustawiajacy wszystkie komponenty na swoich miejscach
+     * @param socket
+     */
     public MenuWindow(Socket socket){
         this.socket = socket;
-        isConnected = socket == null ? false : true;
         menuSize = new Dimension(Constants.menuWidth, Constants.menuHeight);
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -66,6 +88,10 @@ public class MenuWindow extends JFrame implements ActionListener{
 
     }
 
+    /**
+     * metoda obslugujaca wydarzenia nacisniecia przyciskow
+     * @param actionEvent
+     */
     @Override
     public void actionPerformed(ActionEvent actionEvent){
         String komenda = actionEvent.getActionCommand();
@@ -76,6 +102,9 @@ public class MenuWindow extends JFrame implements ActionListener{
         }
     }
 
+    /**
+     * klasa obslugujaca wyswietlanie panelu z pomocą
+     */
     private class HelpPanel extends JPanel{
         private String title;
 
