@@ -12,7 +12,6 @@ public class Program {
         if(socket!=null){
             getSettings(socket);
             getLevel(socket);
-            Constants.loadConstants();
         } else{
             System.out.println("Nie udalo sie polaczyc z serwerem");
             Object[] options={"Tak","Nie"};
@@ -27,6 +26,7 @@ public class Program {
                     break;
             }
         }
+        Constants.loadConstants();
         menuWindow = new MenuWindow(socket);
         menuWindow.setVisible(true);
     }
