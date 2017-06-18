@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.lang.reflect.Array;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Vector;
 
 /**
  * Created by user_name on 21/05/2017.
@@ -127,6 +128,17 @@ public class MenuWindow extends JFrame implements ActionListener{
                     System.out.println("Bląd podczas wychodzenia z gry");
                     System.err.println(e);
                 }
+            case "BackFromHelp":
+                this.remove(helpPanel);
+                helpPanel = null;
+                this.add(menuPanel);
+                this.revalidate();
+                this.repaint();
+                break;
+            case "HighScore":
+                //scorePanel = new HighScorePanel(this);
+                this.remove(menuPanel);
+                break;
         }
     }
 
@@ -191,8 +203,68 @@ public class MenuWindow extends JFrame implements ActionListener{
             System.out.println(Constants.backButton);
             backToMainMenuBtn.setFocusable(false);
             backToMainMenuBtn.addActionListener(listener);
-            backToMainMenuBtn.setActionCommand("Back");
+            backToMainMenuBtn.setActionCommand("BackFromHelp");
             return backToMainMenuBtn;
         }
+    }
+
+    private class HighScorePanel extends JPanel{
+        private class ScorePair{
+            private String name;
+            private int moves;
+            private int time;
+             public ScorePair(String name, int moves, int time){
+                 this.name=name;
+                 this.moves=moves;
+                 this.time=time;
+             }
+             public String getName(){ return  name; }
+             public int getMoves() { return  moves; }
+             public int getTime() { return time; }
+        }
+
+        ArrayList<ScorePair> highscoreList;
+
+        public HighScorePanel(ActionListener listener){
+            setLayout(new BorderLayout());
+            setPreferredSize(menuSize);
+            highscoreList = new ArrayList<>();
+            loadHighScoresFromFile();
+
+        }
+
+        private void loadHighScoresFromFile() {
+            try {
+
+                File xmlInputFile = new File(Constants.xmlHighScoreFile);
+
+                DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+                DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+                Document doc = dBuilder.parse(xmlInputFile);
+                doc.getDocumentElement().normalize();
+                NodeList nList = doc.getElementsByTagName("ScoreID");
+                for (int temp = 0; temp < nList.getLength(); temp++) {
+                    Node nNode = nList.item(temp);
+                    if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+                        Element eElement = (Element) nNode;
+                        highscoreList.add(new ScorePair(eElement.getElementsByTagName("name").item(0).getTextContent(), Integer.parseInt(eElement.getElementsByTagName("moves").item(0).getTextContent()), Integer.parseInt(eElement.getElementsByTagName("time").item(0).getTextContent())));
+                    }
+                }
+            }  catch (Exception e) {
+                System.out.println("Błąd w MenuWindow->HighScorePanel w metodzie loadHighScoresFromFile "+e);
+            }
+        }
+
+//        private JTable createHighScoreTable(){
+//            //sortLists();
+//            //saveHighscoresToFile();
+//            Vector<Vector> rows = new Vector<>();
+//            for(int i = 0; i < 10; i++){
+//                Vector<String> row = new Vector<>();
+//                String rowNumber = Integer.toString((i+1));
+//                row.add(rowNumber);
+//                row.add(highscoreList.get(i).getName());
+//            }
+//        }
     }
 }
