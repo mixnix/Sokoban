@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -99,6 +100,16 @@ public class MenuWindow extends JFrame implements ActionListener{
             case "NewGame":
                 this.setVisible(false);
                 SokobanExample.main(new String[0]);
+                break;
+            case "Exit":
+                try{
+                    if(socket != null)
+                        socket.close();
+                    System.exit(0);
+                } catch(IOException e){
+                    System.out.println("Bląd podczas wychodzenia z gry");
+                    System.err.println(e);
+                }
         }
     }
 
