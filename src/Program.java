@@ -91,7 +91,28 @@ public class Program {
 
         }
         catch (IOException e){
-            System.out.println("Błąd metody get level"+e);
+            System.out.println("Błąd metody get level w klasie program"+e);
+        }
+    }
+
+    public static void getHelp(Socket socket){
+        try{
+            //zniszczenie czegokolwiek co zostalo w buforze
+            socket.getInputStream().skip(socket.getInputStream().available());
+            OutputStream os = socket.getOutputStream();
+            os.flush();
+            PrintWriter pw = new PrintWriter(os, true);
+            pw.flush();
+            InputStream is = socket.getInputStream();
+            BufferedReader br = new BufferedReader(new InputStreamReader(is));
+
+            pw.println("GET_HELP");
+            String levelXml = br.readLine();
+            PrintWriter out = new PrintWriter("Config\\help.xml");
+            out.println(levelXml);
+            out.close();
+        }catch (IOException e){
+            System.out.println("Błąd metody getHelp w klasie Program"+e);
         }
     }
 }
