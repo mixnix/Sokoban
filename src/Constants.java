@@ -46,6 +46,8 @@ public class Constants {
      */
     public static String jbExitText;
 
+    public static String backButton;
+
     /**
      * laduje wszystkie zmienne z pliku
      */
@@ -65,12 +67,12 @@ public class Constants {
             jbHighScoreText = doc.getElementsByTagName("jbHighScoreText").item(0).getTextContent();
             jbHelpText = doc.getElementsByTagName("jbHelpText").item(0).getTextContent();
             jbExitText = doc.getElementsByTagName("jbExitText").item(0).getTextContent();
-
+            backButton = doc.getElementsByTagName("backButton").item(0).getTextContent();
 
         } catch(FileNotFoundException e){
-            System.out.print("Problem w loadConstants"+e);
+            System.out.print("Problem w loadConstants w klasie Constants "+e);
         } catch (Exception e){
-            System.out.println("Problem w loadConstants"+e);
+            System.out.println("Problem w loadConstants w klasie Constants "+e);
         }
 
     }

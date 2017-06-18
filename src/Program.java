@@ -19,6 +19,7 @@ public class Program {
         if(socket!=null){
             getSettings(socket);
             getLevels(socket);
+            getHelp(socket);
         } else{
             System.out.println("Nie udalo sie polaczyc z serwerem");
             Object[] options={"Tak","Nie"};

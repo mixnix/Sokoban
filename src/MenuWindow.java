@@ -1,7 +1,16 @@
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
 import javax.swing.*;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.net.Socket;
@@ -44,6 +53,7 @@ public class MenuWindow extends JFrame implements ActionListener{
     //oddzielna klasa odpowiedzialna za highscore
     //oddzielna klasa odpowiedzialna za pomoc
 
+    private HelpPanel helpPanel;
 
     /**
      * konstruktor ustawiajacy wszystkie komponenty na swoich miejscach
@@ -101,6 +111,13 @@ public class MenuWindow extends JFrame implements ActionListener{
                 this.setVisible(false);
                 SokobanExample.main(new String[0]);
                 break;
+            case "Help":
+                helpPanel = new HelpPanel(this);
+                this.remove(menuPanel);
+                this.add(helpPanel);
+                this.revalidate();
+                this.repaint();
+                break;
             case "Exit":
                 try{
                     if(socket != null)
@@ -116,15 +133,66 @@ public class MenuWindow extends JFrame implements ActionListener{
     /**
      * klasa obslugujaca wyswietlanie panelu z pomocą
      */
+
     private class HelpPanel extends JPanel{
         private String title;
+        private ArrayList<String> rules;
 
-        private ArrayList<String> zasadyArray;
-
-        public HelpPanel(ActionListener menuListener, Socket socket){
+        public HelpPanel(ActionListener listener){
             setLayout(new BorderLayout());
-            setPreferredSize(new Dimension(Constants.menuWidth, Constants.menuHeight));
-            zasadyArray = new ArrayList<String>();
+            setPreferredSize(menuSize);
+            rules = new ArrayList<>();
+
+            loadHelpFromFile();
+            add(createBackButton(listener), BorderLayout.SOUTH);
+            add(createHelpLabel(),BorderLayout.CENTER);
+            setVisible(true);
+        }
+
+        private void loadHelpFromFile(){
+            try{
+                File xmlInputFile = new File("Config\\help.xml");
+                DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+                DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+                Document doc = dBuilder.parse(xmlInputFile);
+                doc.getDocumentElement().normalize();
+                NodeList nList = doc.getElementsByTagName("title");
+                title = nList.item(0).getTextContent();
+                nList = doc.getElementsByTagName("rules");
+                for (int temp = 0; temp < nList.getLength(); temp++) {
+                    Node nNode = nList.item(temp);
+                    if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+                        Element eElement = (Element) nNode;
+                        rules.add(eElement.getTextContent());
+                    }
+                }
+            }catch(Exception e){
+                System.out.println("Błąd w wewnętrznej klasie MenuWindow->HelpPanel w metodzie loadHelpFromFile"+e);
+
+            }
+        }
+
+        private JLabel createHelpLabel(){
+            StringBuilder strB = new StringBuilder("<html><h1>");
+            strB.append(title + "</h1><br>");
+            int counter = 1;
+            for (String rule : rules) {
+                strB.append(counter + ". " + rule + "<br>");
+                counter++;
+            }
+            strB.append("</htm>");
+            String labelText = strB.toString();
+            JLabel helpLabel1 = new JLabel(labelText);
+            return helpLabel1;
+        }
+
+        private JButton createBackButton(ActionListener listener){
+            JButton backToMainMenuBtn = new JButton(Constants.backButton);
+            System.out.println(Constants.backButton);
+            backToMainMenuBtn.setFocusable(false);
+            backToMainMenuBtn.addActionListener(listener);
+            backToMainMenuBtn.setActionCommand("Back");
+            return backToMainMenuBtn;
         }
     }
 }
