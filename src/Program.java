@@ -18,7 +18,7 @@ public class Program {
     public static void run(Socket socket){
         if(socket!=null){
             getSettings(socket);
-            getLevel(socket);
+            getLevels(socket);
         } else{
             System.out.println("Nie udalo sie polaczyc z serwerem");
             Object[] options={"Tak","Nie"};
@@ -64,7 +64,7 @@ public class Program {
      * metoda pobierajaca zmienne okreslajace wyglad poziomu
      * @param socket
      */
-    public static void getLevel(Socket socket){
+    public static void getLevels(Socket socket){
         try{
 
             //zniszczenie czegokolwiek co zostalo w buforze
@@ -76,13 +76,19 @@ public class Program {
             InputStream is = socket.getInputStream();
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
 
-            pw.println("GET_LEVEL:1");
-            is = socket.getInputStream();
-            br = new BufferedReader(new InputStreamReader(is));
-            String firstLevelXml = br.readLine();
-            PrintWriter out = new PrintWriter("Config\\level1.xml");
-            out.println(firstLevelXml);
-            out.close();
+
+
+            pw.println("GET_NUMBER_OF_LVLS");
+            int numberOfLvls = Integer.parseInt(br.readLine());
+
+            for(int n = 1; n <= numberOfLvls; n++){
+                pw.println("GET_LEVEL:"+n);
+                String levelXml = br.readLine();
+                PrintWriter out = new PrintWriter("Config\\level"+n+".xml");
+                out.println(levelXml);
+                out.close();
+            }
+
         }
         catch (IOException e){
             System.out.println("Błąd metody get level"+e);
