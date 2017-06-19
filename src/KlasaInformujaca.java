@@ -8,7 +8,6 @@
 public class KlasaInformujaca {
 
 
-    public static boolean przeszedlLvl1=false;
 
     public static String nick;
 

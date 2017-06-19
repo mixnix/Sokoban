@@ -55,9 +55,17 @@ public class Board extends JPanel implements Runnable {
      */
     public boolean ingame = true;
 
+    /**
+     * obiekt obsługujący zdarzenia
+     */
     public TAdapter adapter;
 
+
+    /**
+     * warunek kończący wątek
+     */
     private boolean skonczWatek = false;
+
     private KoniecGryListener mainMenu;
     public TAdapter getAdaper (){
         return new TAdapter();
@@ -242,9 +250,10 @@ public class Board extends JPanel implements Runnable {
                     box.move(Direction.UP);
                     player.destinationY += -DISTANCE;
                     InfoPanel.nPosuniecia++;
-                }else if(!isNextToWall(Direction.UP) && (getBoxToTheDirection(Direction.UP)==null))
+                }else if(!isNextToWall(Direction.UP) && (getBoxToTheDirection(Direction.UP)==null)) {
                     player.destinationY += -DISTANCE;
-                InfoPanel.nPosuniecia++;
+                    InfoPanel.nPosuniecia++;
+                }
             }
 
             if(key == KeyEvent.VK_LEFT){
@@ -253,9 +262,10 @@ public class Board extends JPanel implements Runnable {
                     box.move(Direction.LEFT);
                     player.destinationX += -DISTANCE;
                     InfoPanel.nPosuniecia++;
-                }else if(!isNextToWall(Direction.LEFT) && (getBoxToTheDirection(Direction.LEFT)==null))
-                   player.destinationX += -DISTANCE;
-                InfoPanel.nPosuniecia++;
+                }else if(!isNextToWall(Direction.LEFT) && (getBoxToTheDirection(Direction.LEFT)==null)) {
+                    player.destinationX += -DISTANCE;
+                    InfoPanel.nPosuniecia++;
+                }
 
             }
 
@@ -265,9 +275,10 @@ public class Board extends JPanel implements Runnable {
                     box.move(Direction.RIGHT);
                     player.destinationX += DISTANCE;
                     InfoPanel.nPosuniecia++;
-                }else if(!isNextToWall(Direction.RIGHT) && (getBoxToTheDirection(Direction.RIGHT)==null))
+                }else if(!isNextToWall(Direction.RIGHT) && (getBoxToTheDirection(Direction.RIGHT)==null)) {
                     player.destinationX += DISTANCE;
-                InfoPanel.nPosuniecia++;
+                    InfoPanel.nPosuniecia++;
+                }
             }
 
 
@@ -278,9 +289,10 @@ public class Board extends JPanel implements Runnable {
                     box.move(Direction.DOWN);
                     player.destinationY += DISTANCE;
                     InfoPanel.nPosuniecia++;
-                }else if(!isNextToWall(Direction.DOWN) && (getBoxToTheDirection(Direction.DOWN)==null))
+                }else if(!isNextToWall(Direction.DOWN) && (getBoxToTheDirection(Direction.DOWN)==null)) {
                     player.destinationY += DISTANCE;
-                InfoPanel.nPosuniecia++;
+                    InfoPanel.nPosuniecia++;
+                }
             }
 
             //checkForVictory();
