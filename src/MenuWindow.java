@@ -117,6 +117,7 @@ public class MenuWindow extends JFrame implements ActionListener, KoniecGryListe
         add(menuPanel);
 
 
+        scorePanel = new HighScorePanel(this);
 
 
 
@@ -164,7 +165,6 @@ public class MenuWindow extends JFrame implements ActionListener, KoniecGryListe
                 break;
             case "BackFromScores":
                 this.remove(scorePanel);
-                scorePanel = null;
                 this.add(menuPanel);
                 this.revalidate();
                 this.repaint();
@@ -177,6 +177,8 @@ public class MenuWindow extends JFrame implements ActionListener, KoniecGryListe
                         break;
                     }
                 }
+                KlasaInformujaca.nick = playerNick;
+                playerNick = null;
 
                 //tworze panel z gra zawierajacy dwie czesci, menu z pauza igre
                 panelZGra = new JPanel();
@@ -407,11 +409,23 @@ public class MenuWindow extends JFrame implements ActionListener, KoniecGryListe
                 TransformerFactory transformerFactory = TransformerFactory.newInstance();
                 Transformer transformer = transformerFactory.newTransformer();
                 DOMSource source = new DOMSource(doc);
-                StreamResult result = new StreamResult(new File("ConfigFiles\\highscores.xml"));
+                StreamResult result = new StreamResult(new File("Config\\highscores.xml"));
                 transformer.transform(source, result);
             }
             catch (Exception e)
             {
+                System.out.println("Menu windows wyjatek " + e);
+            }
+        }
+
+        public void insertScoreIfGood(String nick, int moves, int czas){
+            ScorePair pair = new ScorePair(nick, moves, czas);
+            ScorePair temp = highscoreList.get(9);
+            if(pair.getMoves()<temp.getMoves()){
+                highscoreList.remove(9);
+                highscoreList.add(9,pair);
+                sortLists();
+                saveHighscoresToFile();
 
             }
         }
@@ -446,10 +460,20 @@ public class MenuWindow extends JFrame implements ActionListener, KoniecGryListe
     @Override
     public void KoniecGry(){
 
-        Object[] options={ "play again","back to main menu"};
+        Object[] options={ "wyjdź z programu","back to main menu"};
         switch(JOptionPane.showOptionDialog(this, "Co chcesz zrobić", "Koniec gry",JOptionPane.YES_NO_CANCEL_OPTION,JOptionPane.QUESTION_MESSAGE,null,options,options[1])) {
             case JOptionPane.YES_OPTION:
+                KlasaInformujaca.timeLvl1=0;
+                KlasaInformujaca.iloscRuchowLvl1=0;
+                KlasaInformujaca.nick="";
+                InfoPanel.zapauzowany = true;
+                InfoPanel.nPosuniecia = 0;
+                InfoPanel.licznik = 0;
+                InfoPanel.nCzas = 0;
 
+                scorePanel.insertScoreIfGood(KlasaInformujaca.nick, InfoPanel.nPosuniecia, InfoPanel.nCzas);
+
+                System.exit(0);
                 break;
             case JOptionPane.NO_OPTION:
                 this.remove(panelZGra);
@@ -459,11 +483,20 @@ public class MenuWindow extends JFrame implements ActionListener, KoniecGryListe
                 this.add(menuPanel);
                 this.revalidate();
                 this.repaint();
-                break;
+
                 //zapisanie do najwyzszych wynikow
+                scorePanel.insertScoreIfGood(KlasaInformujaca.nick, InfoPanel.nPosuniecia, InfoPanel.nCzas);
+
+                KlasaInformujaca.timeLvl1=0;
+                KlasaInformujaca.iloscRuchowLvl1=0;
+                KlasaInformujaca.nick="";
+                InfoPanel.zapauzowany = true;
+                InfoPanel.nPosuniecia = 0;
+                InfoPanel.licznik = 0;
+                InfoPanel.nCzas = 0;
 
                 //sczyszczenie zegara
-
+                break;
             default:
                 break;
         }
