@@ -66,6 +66,10 @@ public class MenuWindow extends JFrame implements ActionListener{
 
     private Board board;
 
+    private JPanel panelZGra;
+
+    private InfoPanel infoPanel;
+
     /**
      * konstruktor ustawiajacy wszystkie komponenty na swoich miejscach
      * @param socket
@@ -173,13 +177,22 @@ public class MenuWindow extends JFrame implements ActionListener{
                     }
                 }
 
+                //tworze panel z gra zawierajacy dwie czesci, menu z pauza igre
+                panelZGra = new JPanel();
+                panelZGra.setLayout(new BorderLayout());
 
                 board = new Board(this);
-
                 this.addKeyListener(new OuterAdapter());
                 this.remove(menuPanel);
 
-                this.add(board);
+                infoPanel = new InfoPanel(this);
+
+
+                panelZGra.add(board, BorderLayout.CENTER);
+                panelZGra.add(infoPanel, BorderLayout.SOUTH);
+
+                //dodaje dwuczesciowy panel do glownego okna i przerysowywuje
+                this.add(panelZGra);
                 this.revalidate();
                 this.repaint();
 
