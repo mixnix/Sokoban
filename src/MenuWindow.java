@@ -423,7 +423,8 @@ public class MenuWindow extends JFrame implements ActionListener{
     public class OuterAdapter extends KeyAdapter{
         @Override
         public void keyPressed(KeyEvent e){
-            board.adapter.keyPressed(e);
+            if(!InfoPanel.zapauzowany)
+                board.adapter.keyPressed(e);
         }
     }
 }

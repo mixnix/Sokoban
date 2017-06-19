@@ -8,14 +8,15 @@ import java.awt.event.ActionListener;
 public class InfoPanel extends JPanel {
     static int  nCzas = 0;
     public static int nPosuniecia = 0;
-    boolean zapauzowany = true;
+    static boolean zapauzowany = true;
     static int licznik = 0;
 
     public static JLabel posuniecia;
     public static JLabel czas;
     public static void uaktualnij(){
         posuniecia.setText(Integer.toString(nPosuniecia));
-        licznik+=5;
+        if(!zapauzowany)
+            licznik+=5;
         nCzas = (int)Math.floor(licznik/1000);
         czas.setText(Integer.toString(nCzas));
     }
