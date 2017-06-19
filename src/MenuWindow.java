@@ -63,6 +63,7 @@ public class MenuWindow extends JFrame implements ActionListener{
     private HighScorePanel scorePanel;
 
     private Board board;
+
     /**
      * konstruktor ustawiajacy wszystkie komponenty na swoich miejscach
      * @param socket
@@ -96,6 +97,10 @@ public class MenuWindow extends JFrame implements ActionListener{
         jbExit.setFocusable(false);
 
 
+
+
+
+
         menuPanel = new JPanel();
         menuPanel.setLayout(new GridLayout(5,1,20,20));
         menuPanel.add(new JLabel(Constants.gameTitle, SwingConstants.CENTER));
@@ -103,7 +108,9 @@ public class MenuWindow extends JFrame implements ActionListener{
         menuPanel.add(jbHighScores);
         menuPanel.add(jbHelp);
         menuPanel.add(jbExit);
-        getContentPane().add(menuPanel);
+        add(menuPanel);
+
+
 
 
 
@@ -117,23 +124,7 @@ public class MenuWindow extends JFrame implements ActionListener{
     public void actionPerformed(ActionEvent actionEvent){
         String komenda = actionEvent.getActionCommand();
         switch (komenda){
-            case "NewGame":
-                this.setVisible(false);
-                while(playerNick==null || playerNick.length()==0){
-                    playerNick= JOptionPane.showInputDialog(this,Constants.playerNameDialogText,Constants.playerNameDialogTitle,JOptionPane.INFORMATION_MESSAGE);
-                    if(playerNick==null){
-                        break;
-                    }
-                }
-                SokobanExample.glownaMetoda(new String[0]);
 
-                board = new Board();
-                this.add(board);
-                this.remove(menuPanel);
-                this.revalidate();
-                this.repaint();
-
-                break;
             case "Help":
                 helpPanel = new HelpPanel(this);
                 this.remove(menuPanel);
@@ -170,6 +161,25 @@ public class MenuWindow extends JFrame implements ActionListener{
                 this.add(menuPanel);
                 this.revalidate();
                 this.repaint();
+                break;
+            case "NewGame":
+
+                while(playerNick==null || playerNick.length()==0){
+                    playerNick= JOptionPane.showInputDialog(this,Constants.playerNameDialogText,Constants.playerNameDialogTitle,JOptionPane.INFORMATION_MESSAGE);
+                    if(playerNick==null){
+                        break;
+                    }
+                }
+
+
+                board = new Board(this);
+
+                this.remove(menuPanel);
+
+                this.add(board);
+                this.revalidate();
+                this.repaint();
+
                 break;
         }
     }

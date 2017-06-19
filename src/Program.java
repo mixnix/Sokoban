@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.awt.*;
 import java.io.*;
 import java.net.Socket;
 
@@ -35,8 +36,13 @@ public class Program {
             }
         }
         Constants.loadConstants();
-        menuWindow = new MenuWindow(socket);
-        menuWindow.setVisible(true);
+        EventQueue.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                menuWindow = new MenuWindow(socket);
+                menuWindow.setVisible(true);
+            }
+        });
     }
 
     /**

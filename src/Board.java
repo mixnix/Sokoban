@@ -6,6 +6,7 @@ import javax.swing.*;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.File;
@@ -54,12 +55,24 @@ public class Board extends JPanel implements Runnable {
      */
     public boolean ingame = true;
 
+
+    public TAdapter getAdaper (){
+        return new TAdapter();
+    }
+
     /**
     * Konstruktor inicjujacy plansze gry
      */
-    public Board(){
+    public Board(ActionListener mainMenu){
+
+
 
         KlasaInformujaca.iloscRuchowLvl1=0;
+        KlasaInformujaca.timeLvl1=0;
+
+        //init additional ingame menu
+
+
 
         //init UI
         setFocusable(true);
@@ -70,6 +83,7 @@ public class Board extends JPanel implements Runnable {
 
 
         loadBoardFromXML();
+        setVisible(true);
     }
 
     /**
@@ -211,7 +225,7 @@ public class Board extends JPanel implements Runnable {
     /**
      * prywatna klasa odpowiedzialna za obslugiwanie zdarzen
      */
-    private class TAdapter extends KeyAdapter {
+    public class TAdapter extends KeyAdapter {
 
         @Override
         public void keyPressed(KeyEvent e){
@@ -337,6 +351,8 @@ public class Board extends JPanel implements Runnable {
 
             timeDiff = System.currentTimeMillis() - beforeTime;
             sleep = 5 - timeDiff;
+
+
 
             if(sleep < 0)
                 sleep = 2;
