@@ -13,6 +13,8 @@ import javax.xml.transform.stream.StreamResult;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
 import java.net.Socket;
@@ -174,6 +176,7 @@ public class MenuWindow extends JFrame implements ActionListener{
 
                 board = new Board(this);
 
+                this.addKeyListener(new OuterAdapter());
                 this.remove(menuPanel);
 
                 this.add(board);
@@ -397,5 +400,12 @@ public class MenuWindow extends JFrame implements ActionListener{
 
 
 
+    }
+
+    public class OuterAdapter extends KeyAdapter{
+        @Override
+        public void keyPressed(KeyEvent e){
+            board.adapter.keyPressed(e);
+        }
     }
 }

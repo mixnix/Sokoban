@@ -55,6 +55,7 @@ public class Board extends JPanel implements Runnable {
      */
     public boolean ingame = true;
 
+    public TAdapter adapter;
 
     public TAdapter getAdaper (){
         return new TAdapter();
@@ -79,7 +80,8 @@ public class Board extends JPanel implements Runnable {
         setBackground(Color.blue);
         setPreferredSize(new Dimension(1000,500));
 
-        addKeyListener(new TAdapter());
+        adapter = new TAdapter();
+        addKeyListener(adapter);
 
 
         loadBoardFromXML();
