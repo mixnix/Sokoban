@@ -15,7 +15,7 @@ public class Main {
     private static int port;
 
     /**
-     * metoda main, ktora odpala klase odpowiedzialna za dzialanie calego programu
+     * metoda glownaMetoda, ktora odpala klase odpowiedzialna za dzialanie calego programu
      * @param args
      */
     public static void main(String[] args){

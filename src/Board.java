@@ -59,6 +59,8 @@ public class Board extends JPanel implements Runnable {
      */
     public Board(){
 
+        KlasaInformujaca.iloscRuchowLvl1=0;
+
         //init UI
         setFocusable(true);
         setBackground(Color.blue);

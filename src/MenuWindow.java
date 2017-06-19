@@ -56,10 +56,13 @@ public class MenuWindow extends JFrame implements ActionListener{
      */
     private JPanel menuPanel;
 
+    private String playerNick;
 
     private HelpPanel helpPanel;
 
     private HighScorePanel scorePanel;
+
+    private Board board;
     /**
      * konstruktor ustawiajacy wszystkie komponenty na swoich miejscach
      * @param socket
@@ -102,6 +105,8 @@ public class MenuWindow extends JFrame implements ActionListener{
         menuPanel.add(jbExit);
         getContentPane().add(menuPanel);
 
+
+
     }
 
     /**
@@ -114,7 +119,20 @@ public class MenuWindow extends JFrame implements ActionListener{
         switch (komenda){
             case "NewGame":
                 this.setVisible(false);
-                SokobanExample.main(new String[0]);
+                while(playerNick==null || playerNick.length()==0){
+                    playerNick= JOptionPane.showInputDialog(this,Constants.playerNameDialogText,Constants.playerNameDialogTitle,JOptionPane.INFORMATION_MESSAGE);
+                    if(playerNick==null){
+                        break;
+                    }
+                }
+                SokobanExample.glownaMetoda(new String[0]);
+
+                board = new Board();
+                this.add(board);
+                this.remove(menuPanel);
+                this.revalidate();
+                this.repaint();
+
                 break;
             case "Help":
                 helpPanel = new HelpPanel(this);

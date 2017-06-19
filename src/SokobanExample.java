@@ -21,7 +21,7 @@ public class SokobanExample extends JFrame {
      * tworzy watek z gra i go wywoluje
      * @param args
      */
-    public static void main(String[] args){
+    public static void glownaMetoda(String[] args){
         EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
