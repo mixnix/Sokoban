@@ -128,6 +128,7 @@ public class MenuWindow extends JFrame implements ActionListener{
      */
     @Override
     public void actionPerformed(ActionEvent actionEvent){
+
         String komenda = actionEvent.getActionCommand();
         switch (komenda){
 
@@ -196,6 +197,10 @@ public class MenuWindow extends JFrame implements ActionListener{
                 this.revalidate();
                 this.repaint();
 
+                break;
+            case "Pauza":
+                if(infoPanel.zapauzowany== false) infoPanel.zapauzowany=true;
+                else infoPanel.zapauzowany=false;
                 break;
         }
     }

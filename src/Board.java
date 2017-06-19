@@ -239,8 +239,10 @@ public class Board extends JPanel implements Runnable {
                     Box box = getBoxToTheDirection(Direction.UP);
                     box.move(Direction.UP);
                     player.destinationY += -DISTANCE;
+                    InfoPanel.nPosuniecia++;
                 }else if(!isNextToWall(Direction.UP) && (getBoxToTheDirection(Direction.UP)==null))
                     player.destinationY += -DISTANCE;
+                InfoPanel.nPosuniecia++;
             }
 
             if(key == KeyEvent.VK_LEFT){
@@ -248,8 +250,10 @@ public class Board extends JPanel implements Runnable {
                     Box box = getBoxToTheDirection(Direction.LEFT);
                     box.move(Direction.LEFT);
                     player.destinationX += -DISTANCE;
+                    InfoPanel.nPosuniecia++;
                 }else if(!isNextToWall(Direction.LEFT) && (getBoxToTheDirection(Direction.LEFT)==null))
                    player.destinationX += -DISTANCE;
+                InfoPanel.nPosuniecia++;
 
             }
 
@@ -258,8 +262,10 @@ public class Board extends JPanel implements Runnable {
                     Box box = getBoxToTheDirection(Direction.RIGHT);
                     box.move(Direction.RIGHT);
                     player.destinationX += DISTANCE;
+                    InfoPanel.nPosuniecia++;
                 }else if(!isNextToWall(Direction.RIGHT) && (getBoxToTheDirection(Direction.RIGHT)==null))
                     player.destinationX += DISTANCE;
+                InfoPanel.nPosuniecia++;
             }
 
 
@@ -269,8 +275,10 @@ public class Board extends JPanel implements Runnable {
                     Box box = getBoxToTheDirection(Direction.DOWN);
                     box.move(Direction.DOWN);
                     player.destinationY += DISTANCE;
+                    InfoPanel.nPosuniecia++;
                 }else if(!isNextToWall(Direction.DOWN) && (getBoxToTheDirection(Direction.DOWN)==null))
                     player.destinationY += DISTANCE;
+                InfoPanel.nPosuniecia++;
             }
 
             //checkForVictory();
@@ -343,6 +351,7 @@ public class Board extends JPanel implements Runnable {
         long beforeTime, timeDiff, sleep;
         beforeTime = System.currentTimeMillis();
         while (true){
+            InfoPanel.uaktualnij();
             if (!ingame) {
                 System.exit(0);
                 break;
