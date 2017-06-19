@@ -360,6 +360,9 @@ public class Board extends JPanel implements Runnable {
         animator.start();
     }
 
+    /**
+     * odpowiada za obsługę wątku
+     */
     @Override
     public void run(){
         long beforeTime, timeDiff, sleep;
@@ -398,6 +401,10 @@ public class Board extends JPanel implements Runnable {
         }
     }
 
+    /**
+     * sprawdza czy już się wygrało
+     * @return
+     */
     public boolean checkForVictory(){
         boolean[] winningTable = new boolean[end_positions.size()];
         for(int ij = 0; ij<winningTable.length; ij++)

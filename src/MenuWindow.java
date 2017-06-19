@@ -58,16 +58,34 @@ public class MenuWindow extends JFrame implements ActionListener, KoniecGryListe
      */
     private JPanel menuPanel;
 
+    /**
+     * nick gracza
+     */
     private String playerNick;
 
+    /**
+     * panel z zasadami
+     */
     private HelpPanel helpPanel;
 
+    /**
+     * panel z najwyższymi wynikami
+     */
     private HighScorePanel scorePanel;
 
+    /**
+     * panel z grą
+     */
     private Board board;
 
+    /**
+     * panel zawierajacy gre i infopanel
+     */
     private JPanel panelZGra;
 
+    /**
+     * panel z iloscią kroków, czasemi przyciskiem pauzy
+     */
     private InfoPanel infoPanel;
 
     /**
@@ -209,13 +227,23 @@ public class MenuWindow extends JFrame implements ActionListener, KoniecGryListe
     }
 
     /**
-     * klasa obslugujaca wyswietlanie panelu z pomocą
+     * klasa obslugujaca wyswietlanie panelu z pomocą, zasadmi
      */
 
     private class HelpPanel extends JPanel{
+        /**
+         * tytuł panelu
+         */
         private String title;
+        /**
+         * tablica przechowująca zasady
+         */
         private ArrayList<String> rules;
 
+        /**
+         * konstruktor
+         * @param listener
+         */
         public HelpPanel(ActionListener listener){
             setLayout(new BorderLayout());
             setPreferredSize(menuSize);
@@ -227,6 +255,9 @@ public class MenuWindow extends JFrame implements ActionListener, KoniecGryListe
             setVisible(true);
         }
 
+        /**
+         * ładuje zasady z pliku
+         */
         private void loadHelpFromFile(){
             try{
                 File xmlInputFile = new File("Config\\help.xml");
@@ -250,6 +281,10 @@ public class MenuWindow extends JFrame implements ActionListener, KoniecGryListe
             }
         }
 
+        /**
+         * tworzy etykietę z zasadami
+         * @return
+         */
         private JLabel createHelpLabel(){
             StringBuilder strB = new StringBuilder("<html><h1>");
             strB.append(title + "</h1><br>");
@@ -264,6 +299,11 @@ public class MenuWindow extends JFrame implements ActionListener, KoniecGryListe
             return helpLabel1;
         }
 
+        /**
+         * przycisk powrotu do menu
+         * @param listener
+         * @return
+         */
         private JButton createBackButton(ActionListener listener){
             JButton backToMainMenuBtn = new JButton(Constants.backButton);
             System.out.println(Constants.backButton);
@@ -274,7 +314,13 @@ public class MenuWindow extends JFrame implements ActionListener, KoniecGryListe
         }
     }
 
+    /**
+     * panel wyświetlający najwyższe wyniki
+     */
     private class HighScorePanel extends JPanel{
+        /**
+         * przechowuje jeden wynik
+         */
         private class ScorePair{
             private String name;
             private int moves;
@@ -289,8 +335,15 @@ public class MenuWindow extends JFrame implements ActionListener, KoniecGryListe
              public int getTime() { return time; }
         }
 
+        /**
+         * tablica przedchowująca wszystkie wyniki
+         */
         ArrayList<ScorePair> highscoreList;
 
+        /**
+         * konstruktor
+         * @param listener
+         */
         public HighScorePanel(ActionListener listener){
             setLayout(new BorderLayout());
             setPreferredSize(menuSize);
@@ -303,6 +356,9 @@ public class MenuWindow extends JFrame implements ActionListener, KoniecGryListe
 
         }
 
+        /**
+         * ładuje najwyższe wyniki z pliku
+         */
         private void loadHighScoresFromFile() {
             try {
 
@@ -325,6 +381,10 @@ public class MenuWindow extends JFrame implements ActionListener, KoniecGryListe
             }
         }
 
+        /**
+         * tworzy etykietę zawierająca najwyższe wyniki
+         * @return
+         */
         private JTable createHighScoreTable(){
             sortLists();
             saveHighscoresToFile();
@@ -351,6 +411,11 @@ public class MenuWindow extends JFrame implements ActionListener, KoniecGryListe
             return highScoreLabel;
         }
 
+        /**
+         * tworzy przycisk powrotu do menu
+         * @param menuListener
+         * @return
+         */
         private JButton createBackToMenuButton(ActionListener menuListener) {
             JButton backToMainMenuBtn = new JButton(Constants.backButtonHighScores);
             backToMainMenuBtn.setFocusable(false);
@@ -359,6 +424,10 @@ public class MenuWindow extends JFrame implements ActionListener, KoniecGryListe
             return backToMainMenuBtn;
         }
 
+        /**
+         * etykieta opisująca tabelę
+         * @return
+         */
         private JLabel createHighScoreLabel() {
             JLabel highScoreLbl = new JLabel("<html><br>"+"[numer wyniku, nick, ruchy, czas w sekundach]"+"<br><br></html>");
             highScoreLbl.setHorizontalAlignment(JLabel.CENTER);
@@ -366,6 +435,10 @@ public class MenuWindow extends JFrame implements ActionListener, KoniecGryListe
             highScoreLbl.setFont(new Font("Arial", Font.PLAIN, 17));
             return highScoreLbl;
         }
+
+        /**
+         * sortuje wyniki
+         */
         private void sortLists() {
             Collections.sort(highscoreList, new Comparator<ScorePair>() {
                 @Override
@@ -383,6 +456,9 @@ public class MenuWindow extends JFrame implements ActionListener, KoniecGryListe
             });
         }
 
+        /**
+         * zapisuje wyniki do pliku
+         */
         private void saveHighscoresToFile(){
             try{
                 DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
@@ -418,6 +494,12 @@ public class MenuWindow extends JFrame implements ActionListener, KoniecGryListe
             }
         }
 
+        /**
+         * jeśli wynik jest wyższy to wyrzuca ostatni wynik i wstawia ten
+         * @param nick
+         * @param moves
+         * @param czas
+         */
         public void insertScoreIfGood(String nick, int moves, int czas){
             ScorePair pair = new ScorePair(nick, moves, czas);
             ScorePair temp = highscoreList.get(9);
@@ -435,6 +517,9 @@ public class MenuWindow extends JFrame implements ActionListener, KoniecGryListe
 
     }
 
+    /**
+     * obsługuje wydarzenia z gry, nacisnięcia strzałek
+     */
     public class OuterAdapter extends KeyAdapter{
         @Override
         public void keyPressed(KeyEvent e){
@@ -443,20 +528,10 @@ public class MenuWindow extends JFrame implements ActionListener, KoniecGryListe
         }
     }
 
-//    public static void end(){
-//        Object[] options={ "play again","back to main menu", "nie wime co to"};
-//        switch(JOptionPane.showOptionDialog(this, "cos", "coś 22",JOptionPane.YES_NO_CANCEL_OPTION,JOptionPane.QUESTION_MESSAGE,null,options,options[1])) {
-//            case JOptionPane.YES_OPTION:
-//                break;
-//            case JOptionPane.NO_OPTION:
-//                break;
-//            case JOptionPane.CANCEL_OPTION:
-//                break;
-//            default:
-//                break;
-//        }
-//    }
 
+    /**
+     * obsługuje wydarzenie gdy gracz przejdzie planszę
+     */
     @Override
     public void KoniecGry(){
 

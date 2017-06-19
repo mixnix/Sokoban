@@ -46,14 +46,30 @@ public class Constants {
      */
     public static String jbExitText;
 
+    /**
+     * stała etykiety napisu powrotnego z pomocy
+     */
     public static String backButton;
 
+    /**
+     * stała mówiąca o położeniu pliku z najwyższymi wynikami
+     */
     public static String xmlHighScoreFile;
 
+    /**
+     * etykieta przycisku powrotu z najwyższych wyników
+     */
     public static String backButtonHighScores;
 
+    /**
+     * etykieta okna dialogowego wyswietlanego po koncu gry
+     */
     public static String playerNameDialogText;
 
+
+    /**
+     * etykieta tytułu okna dialogowego wyświetlanego po końcu gry
+     */
     public static String playerNameDialogTitle;
 
     /**

@@ -6,6 +6,10 @@ import java.awt.event.ActionListener;
 /**
  * Created by user_name on 24.02.2017.
  */
+
+/**
+ * klasa używana przy testowaniu programu, zostawiona w celu dalszego rozwoju
+ */
 public class SokobanExample extends JFrame implements ActionListener {
     /**
      * inicjuje okno

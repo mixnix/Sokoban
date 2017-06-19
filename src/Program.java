@@ -103,6 +103,10 @@ public class Program {
         }
     }
 
+    /**
+     * ściąga pomoc z serwera
+     * @param socket
+     */
     public static void getHelp(Socket socket){
         try{
             //zniszczenie czegokolwiek co zostalo w buforze
@@ -124,6 +128,10 @@ public class Program {
         }
     }
 
+    /**
+     * ściąga najwyższe wyniki z serwera
+     * @param socket
+     */
     public static void getHighscores(Socket socket){
         try{
             //zniszczenie czegokolwiek co zostalo w buforze
