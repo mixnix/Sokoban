@@ -26,7 +26,7 @@ import java.util.Vector;
 /**
  * Created by user_name on 21/05/2017.
  */
-public class MenuWindow extends JFrame implements ActionListener{
+public class MenuWindow extends JFrame implements ActionListener, KoniecGryListener{
     /**
      * port na którym łączymy się z serwerem
      */
@@ -198,6 +198,7 @@ public class MenuWindow extends JFrame implements ActionListener{
                 this.repaint();
 
                 break;
+
             case "Pauza":
                 if(infoPanel.zapauzowany== false) infoPanel.zapauzowany=true;
                 else infoPanel.zapauzowany=false;
@@ -326,7 +327,7 @@ public class MenuWindow extends JFrame implements ActionListener{
             sortLists();
             saveHighscoresToFile();
             Vector<Vector> rows = new Vector<>();
-            for(int i = 0; i < 2; i++){
+            for(int i = 0; i < 10; i++){
                 Vector<String> row = new Vector<>();
                 String rowNumber = Integer.toString((i+1));
                 row.add(rowNumber);
@@ -357,7 +358,7 @@ public class MenuWindow extends JFrame implements ActionListener{
         }
 
         private JLabel createHighScoreLabel() {
-            JLabel highScoreLbl = new JLabel("<html><br>"+"dupa, dupa"+"<br><br></html>");
+            JLabel highScoreLbl = new JLabel("<html><br>"+"[numer wyniku, nick, ruchy, czas w sekundach]"+"<br><br></html>");
             highScoreLbl.setHorizontalAlignment(JLabel.CENTER);
             highScoreLbl.setVerticalAlignment(JLabel.CENTER);
             highScoreLbl.setFont(new Font("Arial", Font.PLAIN, 17));
@@ -367,10 +368,10 @@ public class MenuWindow extends JFrame implements ActionListener{
             Collections.sort(highscoreList, new Comparator<ScorePair>() {
                 @Override
                 public int compare(ScorePair pair, ScorePair t1) {
-                    if(pair.getMoves()<t1.getMoves()){
+                    if(pair.getMoves()>t1.getMoves()){
                         return 1;
                     }
-                    if(pair.getMoves()>t1.getMoves())
+                    if(pair.getMoves()<t1.getMoves())
                     {
                         return -1;
                     }
@@ -425,6 +426,46 @@ public class MenuWindow extends JFrame implements ActionListener{
         public void keyPressed(KeyEvent e){
             if(!InfoPanel.zapauzowany)
                 board.adapter.keyPressed(e);
+        }
+    }
+
+//    public static void end(){
+//        Object[] options={ "play again","back to main menu", "nie wime co to"};
+//        switch(JOptionPane.showOptionDialog(this, "cos", "coś 22",JOptionPane.YES_NO_CANCEL_OPTION,JOptionPane.QUESTION_MESSAGE,null,options,options[1])) {
+//            case JOptionPane.YES_OPTION:
+//                break;
+//            case JOptionPane.NO_OPTION:
+//                break;
+//            case JOptionPane.CANCEL_OPTION:
+//                break;
+//            default:
+//                break;
+//        }
+//    }
+
+    @Override
+    public void KoniecGry(){
+
+        Object[] options={ "play again","back to main menu"};
+        switch(JOptionPane.showOptionDialog(this, "Co chcesz zrobić", "Koniec gry",JOptionPane.YES_NO_CANCEL_OPTION,JOptionPane.QUESTION_MESSAGE,null,options,options[1])) {
+            case JOptionPane.YES_OPTION:
+
+                break;
+            case JOptionPane.NO_OPTION:
+                this.remove(panelZGra);
+                panelZGra = null;
+
+                //napisz tu zapisywanie do najwyzszych wynikow
+                this.add(menuPanel);
+                this.revalidate();
+                this.repaint();
+                break;
+                //zapisanie do najwyzszych wynikow
+
+                //sczyszczenie zegara
+
+            default:
+                break;
         }
     }
 }

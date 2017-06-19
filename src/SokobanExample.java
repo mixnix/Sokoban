@@ -11,7 +11,7 @@ public class SokobanExample extends JFrame implements ActionListener {
      * inicjuje okno
      */
     public SokobanExample(){
-        add(new Board(this));
+        //add(new Board(this));
         setSize(1000,500);
 
         setTitle("Sokoban");

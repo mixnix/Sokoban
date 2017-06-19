@@ -57,6 +57,8 @@ public class Board extends JPanel implements Runnable {
 
     public TAdapter adapter;
 
+    private boolean skonczWatek = false;
+    private KoniecGryListener mainMenu;
     public TAdapter getAdaper (){
         return new TAdapter();
     }
@@ -64,9 +66,9 @@ public class Board extends JPanel implements Runnable {
     /**
     * Konstruktor inicjujacy plansze gry
      */
-    public Board(ActionListener mainMenu){
+    public Board(KoniecGryListener mainMenu){
 
-
+        this.mainMenu = mainMenu;
 
         KlasaInformujaca.iloscRuchowLvl1=0;
         KlasaInformujaca.timeLvl1=0;
@@ -351,7 +353,7 @@ public class Board extends JPanel implements Runnable {
         long beforeTime, timeDiff, sleep;
 
         beforeTime = System.currentTimeMillis();
-        while (true){
+        while (!skonczWatek){
             InfoPanel.uaktualnij();
             if (!ingame) {
                 System.exit(0);
@@ -377,8 +379,10 @@ public class Board extends JPanel implements Runnable {
 
             beforeTime = System.currentTimeMillis();
 
-            if(checkForVictory())
-                ingame = false;
+            if(checkForVictory()){
+                mainMenu.KoniecGry();
+                skonczWatek=true;
+            }
         }
     }
 
