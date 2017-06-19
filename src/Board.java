@@ -76,6 +76,8 @@ public class Board extends JPanel implements Runnable {
      */
     public Board(KoniecGryListener mainMenu){
 
+
+        setDoubleBuffered(true);
         this.mainMenu = mainMenu;
 
         KlasaInformujaca.iloscRuchowLvl1=0;

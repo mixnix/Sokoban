@@ -103,6 +103,7 @@ public class MenuWindow extends JFrame implements ActionListener, KoniecGryListe
         setLocationRelativeTo(null);
         setVisible(true);
 
+
         jbNewGame = new JButton(Constants.jbNewGameText);
         jbNewGame.setActionCommand("NewGame");
         jbNewGame.addActionListener(this);
