@@ -6,14 +6,18 @@ import java.awt.event.ActionListener;
  * Created by user_name on 19.06.2017.
  */
 public class InfoPanel extends JPanel {
-    int nCzas = 0;
+    static int  nCzas = 0;
     public static int nPosuniecia = 0;
     boolean zapauzowany = true;
+    static int licznik = 0;
 
     public static JLabel posuniecia;
-    public JLabel czas;
+    public static JLabel czas;
     public static void uaktualnij(){
         posuniecia.setText(Integer.toString(nPosuniecia));
+        licznik+=5;
+        nCzas = (int)Math.floor(licznik/1000);
+        czas.setText(Integer.toString(nCzas));
     }
 
     public InfoPanel(ActionListener glowneMenu){

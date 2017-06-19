@@ -349,6 +349,7 @@ public class Board extends JPanel implements Runnable {
     @Override
     public void run(){
         long beforeTime, timeDiff, sleep;
+
         beforeTime = System.currentTimeMillis();
         while (true){
             InfoPanel.uaktualnij();
