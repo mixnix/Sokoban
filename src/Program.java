@@ -21,6 +21,7 @@ public class Program {
             getSettings(socket);
             getLevels(socket);
             getHelp(socket);
+            getHighscores(socket);
         } else{
             System.out.println("Nie udalo sie polaczyc z serwerem");
             Object[] options={"Tak","Nie"};
@@ -120,6 +121,27 @@ public class Program {
             out.close();
         }catch (IOException e){
             System.out.println("Błąd metody getHelp w klasie Program"+e);
+        }
+    }
+
+    public static void getHighscores(Socket socket){
+        try{
+            //zniszczenie czegokolwiek co zostalo w buforze
+            socket.getInputStream().skip(socket.getInputStream().available());
+            OutputStream os = socket.getOutputStream();
+            os.flush();
+            PrintWriter pw = new PrintWriter(os, true);
+            pw.flush();
+            InputStream is = socket.getInputStream();
+            BufferedReader br = new BufferedReader(new InputStreamReader(is));
+
+            pw.println("GET_HIGHSCORES");
+            String levelXml = br.readLine();
+            PrintWriter out = new PrintWriter("Config\\highscores.xml");
+            out.println(levelXml);
+            out.close();
+        }catch (IOException e){
+            System.out.println("Błąd metody getHighscores w klasie Program"+e);
         }
     }
 }
