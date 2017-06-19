@@ -50,6 +50,9 @@ public class Constants {
 
     public static String xmlHighScoreFile;
 
+    public static String backButtonHighScores;
+
+
     /**
      * laduje wszystkie zmienne z pliku
      */
@@ -71,6 +74,7 @@ public class Constants {
             jbExitText = doc.getElementsByTagName("jbExitText").item(0).getTextContent();
             backButton = doc.getElementsByTagName("backButton").item(0).getTextContent();
             xmlHighScoreFile = doc.getElementsByTagName("xmlHighScoreFile").item(0).getTextContent();
+            backButtonHighScores = doc.getElementsByTagName("backButtonHighScores").item(0).getTextContent();
 
         } catch(FileNotFoundException e){
             System.out.print("Problem w loadConstants w klasie Constants "+e);

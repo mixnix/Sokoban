@@ -6,15 +6,19 @@ import org.w3c.dom.NodeList;
 import javax.swing.*;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Vector;
 
 /**
@@ -51,11 +55,11 @@ public class MenuWindow extends JFrame implements ActionListener{
      * panel na którym jest narysowane menu
      */
     private JPanel menuPanel;
-    //oddzielna klasa odpowiedzialna za highscore
-    //oddzielna klasa odpowiedzialna za pomoc
+
 
     private HelpPanel helpPanel;
 
+    private HighScorePanel scorePanel;
     /**
      * konstruktor ustawiajacy wszystkie komponenty na swoich miejscach
      * @param socket
@@ -136,8 +140,18 @@ public class MenuWindow extends JFrame implements ActionListener{
                 this.repaint();
                 break;
             case "HighScore":
-                //scorePanel = new HighScorePanel(this);
+                scorePanel = new HighScorePanel(this);
                 this.remove(menuPanel);
+                this.add(scorePanel);
+                this.revalidate();
+                this.repaint();
+                break;
+            case "BackFromScores":
+                this.remove(scorePanel);
+                scorePanel = null;
+                this.add(menuPanel);
+                this.revalidate();
+                this.repaint();
                 break;
         }
     }
@@ -230,6 +244,10 @@ public class MenuWindow extends JFrame implements ActionListener{
             setPreferredSize(menuSize);
             highscoreList = new ArrayList<>();
             loadHighScoresFromFile();
+            add(createHighScoreTable(), BorderLayout.CENTER);
+            add(createHighScoreLabel(), BorderLayout.NORTH);
+            add(createBackToMenuButton(listener), BorderLayout.SOUTH);
+            setVisible(true);
 
         }
 
@@ -255,16 +273,101 @@ public class MenuWindow extends JFrame implements ActionListener{
             }
         }
 
-//        private JTable createHighScoreTable(){
-//            //sortLists();
-//            //saveHighscoresToFile();
-//            Vector<Vector> rows = new Vector<>();
-//            for(int i = 0; i < 10; i++){
-//                Vector<String> row = new Vector<>();
-//                String rowNumber = Integer.toString((i+1));
-//                row.add(rowNumber);
-//                row.add(highscoreList.get(i).getName());
-//            }
-//        }
+        private JTable createHighScoreTable(){
+            sortLists();
+            saveHighscoresToFile();
+            Vector<Vector> rows = new Vector<>();
+            for(int i = 0; i < 2; i++){
+                Vector<String> row = new Vector<>();
+                String rowNumber = Integer.toString((i+1));
+                row.add(rowNumber);
+                row.add(highscoreList.get(i).getName());
+                row.add(Integer.toString(highscoreList.get(i).getMoves()));
+                row.add(Integer.toString(highscoreList.get(i).getTime()));
+                rows.add(row);
+            }
+            Vector<String> columnsLabels = new Vector<>();
+            columnsLabels.addElement("_");
+            columnsLabels.addElement("nick");
+            columnsLabels.addElement("moves");
+            columnsLabels.addElement("time");
+
+            JTable highScoreLabel = new JTable(rows, columnsLabels);
+            highScoreLabel.setEnabled(false);
+            highScoreLabel.getTableHeader().setReorderingAllowed(false);
+
+            return highScoreLabel;
+        }
+
+        private JButton createBackToMenuButton(ActionListener menuListener) {
+            JButton backToMainMenuBtn = new JButton(Constants.backButtonHighScores);
+            backToMainMenuBtn.setFocusable(false);
+            backToMainMenuBtn.addActionListener(menuListener);
+            backToMainMenuBtn.setActionCommand("BackFromScores");
+            return backToMainMenuBtn;
+        }
+
+        private JLabel createHighScoreLabel() {
+            JLabel highScoreLbl = new JLabel("<html><br>"+"dupa, dupa"+"<br><br></html>");
+            highScoreLbl.setHorizontalAlignment(JLabel.CENTER);
+            highScoreLbl.setVerticalAlignment(JLabel.CENTER);
+            highScoreLbl.setFont(new Font("Arial", Font.PLAIN, 17));
+            return highScoreLbl;
+        }
+        private void sortLists() {
+            Collections.sort(highscoreList, new Comparator<ScorePair>() {
+                @Override
+                public int compare(ScorePair pair, ScorePair t1) {
+                    if(pair.getMoves()<t1.getMoves()){
+                        return 1;
+                    }
+                    if(pair.getMoves()>t1.getMoves())
+                    {
+                        return -1;
+                    }
+                    else
+                        return 0;
+                }
+            });
+        }
+
+        private void saveHighscoresToFile(){
+            try{
+                DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+                DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+                Document doc = docBuilder.newDocument();
+                Element rootElement = doc.createElement("highscores");
+                doc.appendChild(rootElement);
+                for(int i=0;i<10;i++) {
+                    if(highscoreList.size()<=i)
+                        break;
+                    Element ScoreID = doc.createElement("ScoreID");
+                    rootElement.appendChild(ScoreID);
+                    ScoreID.setAttribute("id", Integer.toString(i));
+                    Element name = doc.createElement("name");
+                    name.appendChild(doc.createTextNode(highscoreList.get(i).getName()));
+                    ScoreID.appendChild(name);
+                    Element moves = doc.createElement("moves");
+                    moves.appendChild(doc.createTextNode(Integer.toString(highscoreList.get(i).getMoves())));
+                    ScoreID.appendChild(moves);
+                    Element time = doc.createElement("time");
+                    time.appendChild(doc.createTextNode(Integer.toString(highscoreList.get(i).getTime())));
+                    ScoreID.appendChild(time);
+                }
+                TransformerFactory transformerFactory = TransformerFactory.newInstance();
+                Transformer transformer = transformerFactory.newTransformer();
+                DOMSource source = new DOMSource(doc);
+                StreamResult result = new StreamResult(new File("ConfigFiles\\highscores.xml"));
+                transformer.transform(source, result);
+            }
+            catch (Exception e)
+            {
+
+            }
+        }
+
+
+
+
     }
 }
